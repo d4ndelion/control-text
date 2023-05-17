@@ -26,11 +26,11 @@ data class TextFieldOptions(
     override var paddingTop: Dp = 0.dp,
     override var paddingRight: Dp? = null,
     override var paddingBottom: Dp? = null,
-    override var borderWidth: Dp = 0.dp,
-    override var borderColor: Color = White,
+    override var borderWidth: Dp = 1.dp,
+    override var borderColor: Color = Black,
     override var background: Color = White,
-    override var shadowColor: Color = White,
-    override var shadowOpacity: Dp = 0.dp,
+    override var shadowColor: Color = Black,
+    override var shadowOpacity: Dp = 4.dp,
     override var shadowOffsetX: Dp = 0.dp,
     override var shadowOffsetY: Dp = 0.dp,
     override var shadowSize: Dp = 0.dp,
@@ -43,25 +43,25 @@ data class TextFieldOptions(
     override var textAlignment: Item<TextAlign> = left,
     override var underlineThickness: Dp = 0.dp,
     override var underlineColor: Color = Black,
+    var dynamicHeight: Boolean = false, // todo
     var defaultText: String = "",
-    var defaultTextColor: Color = textColor,
+    var defaultTextColor: Color = Black,
     var maxCharacters: Int = 0,
     var secureTextEntry: Boolean = false,
     var keyboardType: Item<KeyboardType> = text,
-    var executionDelay: Long = 0L,
+    var executionDelay: Long = 0L, // todo перевести в float sec
     var identifier: String = "",
     var nextResponder: String = "",
     var firstResponder: Boolean = false
 ) : CommonOptions {
     override fun toString() = """  
-    Overall features
-            Input is enabled.
+            Input is disabled.
             radius = $radius
 
     Position
             xOffset = $xOffset
             yOffset = $yOffset
-            relativePosition = $relativePosition
+            relativePosition = ${relativePosition.name}
 
     Size
             width = $width
@@ -70,18 +70,18 @@ data class TextFieldOptions(
             minHeight = $minHeight
 
     Padding
-            paddingLeft = $paddingLeft
             paddingTop = $paddingTop
             paddingRight = $paddingRight
             paddingBottom = $paddingBottom
+            paddingLeft = $paddingLeft
 
     Border
             borderWidth= $borderWidth
-            borderColor = $borderColor
+            borderColor = RGB(${borderColor.red.times(255).toInt()} ${borderColor.green.times(255).toInt()} ${borderColor.blue.times(255).toInt()})
 
     Background
-            background = $background
-            shadowColor = $shadowColor
+            background = RGB(${background.red.times(255).toInt()} ${background.green.times(255).toInt()} ${background.blue.times(255).toInt()})
+            shadowColor = RGB(${shadowColor.red.times(255).toInt()} ${shadowColor.green.times(255).toInt()} ${shadowColor.blue.times(255).toInt()})
             shadowOpacity = $shadowOpacity
             shadowOffsetX = $shadowOffsetX
             shadowOffsetY = $shadowOffsetY
@@ -90,22 +90,22 @@ data class TextFieldOptions(
     Text
             font = ${font.name}
             fontSize = $fontSize
-            textColor = $textColor
+            textColor = RGB(${textColor.red.times(255).toInt()} ${textColor.green.times(255).toInt()} ${textColor.blue.times(255).toInt()})
             lineSpacing = $lineSpacing
             lineCount = $lineCount
             isScrollable = $isScrollable
-            textAlignment = $textAlignment
+            textAlignment = ${textAlignment.name}
 
     Underline
             underlineThickness = $underlineThickness
-            underlineColor = $underlineColor
+            underlineColor = RGB(${underlineColor.red.times(255).toInt()} ${underlineColor.green.times(255).toInt()} ${underlineColor.blue.times(255).toInt()})
 
     Features
             defaultText = $defaultText
-            defaultTextColor = $defaultTextColor
+            defaultTextColor = RGB(${defaultTextColor.red.times(255).toInt()} ${defaultTextColor.green.times(255).toInt()} ${defaultTextColor.blue.times(255).toInt()})
             maxCharacters = $maxCharacters
             secureTextEntry = $secureTextEntry
-            keyboardType = $keyboardType
+            keyboardType = ${keyboardType.name}
             executionDelay = $executionDelay
             identifier = $identifier
             nextResponder = $nextResponder
