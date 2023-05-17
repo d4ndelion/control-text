@@ -1,6 +1,7 @@
 package com.dandelion.controltext
 
 import android.os.Bundle
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ private var screenState by mutableStateOf<Screen>(Enter)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
         setContent {
             ControlTextTheme {
                 App(screenState)

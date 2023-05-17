@@ -32,7 +32,7 @@ data class TextFieldOptions(
     override var background: Color = White,
     override var isBackgroundClear: Boolean = true,
     override var shadowColor: Color = Black,
-    override var isShadowColorClear: Boolean = false,
+    override var isShadowColorClear: Boolean = true,
     override var shadowOpacity: Dp = 10.dp,
     override var shadowOffsetX: Dp = 0.dp,
     override var shadowOffsetY: Dp = 0.dp,
