@@ -122,10 +122,16 @@ private fun Configuration(currentField: CommonOptions) {
             NumericFieldNullable("Padding left", paddingLeft) { paddingLeft = it?.dp }
             SectionText(text = "Border")
             NumericField("Border width", borderWidth) { borderWidth = it.dp }
-            ColorInput("Border color", borderColor) { borderColor = it }
+            ColorInput("Border color", borderColor, isBorderColorClear, { isBorderColorClear = it }) {
+                borderColor = it
+            }
             SectionText(text = "Background")
-            ColorInput("Background color", background) { background = it }
-            ColorInput("Shadow color", shadowColor) { shadowColor = it }
+            ColorInput("Background color", background, isBackgroundClear, { isBackgroundClear = it }) {
+                background = it
+            }
+            ColorInput("Shadow color", shadowColor, isShadowColorClear, { isShadowColorClear = it }) {
+                shadowColor = it
+            }
             NumericField("Shadow opacity", shadowOpacity) { shadowOpacity = it.dp }
             NegativeNumericField("Shadow offset x", shadowOffsetX) { shadowOffsetX = it.dp }
             NegativeNumericField("Shadow offset y", shadowOffsetY) { shadowOffsetY = it.dp }
@@ -138,7 +144,7 @@ private fun Configuration(currentField: CommonOptions) {
                 onItemClick = { font = it },
                 item = { Text(it.name) })
             NumericField("Font size", fontSize) { fontSize = it.sp }
-            ColorInput("Text color", textColor) { textColor = it }
+            ColorInput("Text color", textColor, isTextColorClear, { isTextColorClear = it }) { textColor = it }
             NumericField("Line spacing", lineSpacing) { lineSpacing = it.sp }
             NumericField("Line count", lineCount) { lineCount = it }
             LabeledOptionCheckbox("Scrollable", isScrollable) { isScrollable = it }
@@ -150,7 +156,11 @@ private fun Configuration(currentField: CommonOptions) {
                 item = { Text(it.name) })
             SectionText(text = "Underline")
             NumericField("Underline Thickness", underlineThickness) { underlineThickness = it.dp }
-            ColorInput("Underline color", underlineColor) { underlineColor = it }
+            ColorInput(
+                "Underline color",
+                underlineColor,
+                isUnderlineColorClear,
+                { isUnderlineColorClear = it }) { underlineColor = it }
             SectionText(text = "Features")
             when (this) {
                 is TextOptions -> TextFeatures(this)
@@ -165,7 +175,7 @@ fun TextFeatures(currentField: TextOptions) {
     with(currentField) {
         TextOptionField("Content", content) { content = it }
         TextOptionField("Link", link) { link = it }
-        ColorInput("Link color", linkColor) { linkColor = it }
+        ColorInput("Link color", linkColor, isLinkColorClear, { isLinkColorClear = it }) { linkColor = it }
         ItemDropdown(
             label = "Link font",
             initialItem = linkFont,
@@ -173,7 +183,11 @@ fun TextFeatures(currentField: TextOptions) {
             onItemClick = { linkFont = it },
             item = { Text(it.name) })
         NumericField("Link font size", linkFontSize) { linkFontSize = it.sp }
-        ColorInput("Link underline color", linkUnderlineColor) { linkUnderlineColor = it }
+        ColorInput(
+            "Link underline color",
+            linkUnderlineColor,
+            isLinkUnderlineColorClear,
+            { isLinkUnderlineColorClear = it }) { linkUnderlineColor = it }
         NumericField("Link underline thickness", linkUnderlineThickness) { linkUnderlineThickness = it.dp }
     }
 }
@@ -182,7 +196,11 @@ fun TextFeatures(currentField: TextOptions) {
 fun TextFieldFeatures(currentField: TextFieldOptions) {
     with(currentField) {
         TextOptionField("Default text", defaultText) { defaultText = it }
-        ColorInput("Default text color", defaultTextColor) { defaultTextColor = it }
+        ColorInput(
+            "Default text color",
+            defaultTextColor,
+            isDefaultTextColorClear,
+            { isDefaultTextColorClear = it }) { defaultTextColor = it }
         NumericField("Max characters", maxCharacters) { maxCharacters = it }
         LabeledOptionCheckbox("Secure text entry", secureTextEntry) { secureTextEntry = it }
         ItemDropdown(

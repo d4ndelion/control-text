@@ -33,11 +33,14 @@ interface CommonOptions {
     //<editor-fold desc="Border">
     var borderWidth: Dp
     var borderColor: Color
+    var isBorderColorClear: Boolean
     //</editor-fold>
 
     //<editor-fold desc="Background">
     var background: Color
+    var isBackgroundClear: Boolean
     var shadowColor: Color
+    var isShadowColorClear: Boolean
     var shadowOpacity: Dp
     var shadowOffsetX: Dp
     var shadowOffsetY: Dp
@@ -48,6 +51,7 @@ interface CommonOptions {
     var font: Item<FontFamily>
     var fontSize: TextUnit
     var textColor: Color
+    var isTextColorClear: Boolean
     var lineSpacing: TextUnit
     var lineCount: Int
     var isScrollable: Boolean
@@ -57,5 +61,6 @@ interface CommonOptions {
     //<editor-fold desc="Underline">
     var underlineThickness: Dp
     var underlineColor: Color
+    var isUnderlineColorClear: Boolean
     //</editor-fold>
 }

@@ -34,7 +34,13 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 
 @Composable
-fun ColorInput(label: String, initValue: Color, defaultClear: Boolean = false, onColorChange: (Color) -> Unit) {
+fun ColorInput(
+    label: String,
+    initValue: Color,
+    defaultClear: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    onColorChange: (Color) -> Unit
+) {
 
     var r by remember(onColorChange) {
         mutableStateOf((initValue.red * 255).toInt().toString())
@@ -55,7 +61,8 @@ fun ColorInput(label: String, initValue: Color, defaultClear: Boolean = false, o
                 .padding(start = 10.dp)
                 .fillMaxWidth(), text = label
         )
-        LabeledCheckbox(checked = clear, label = "Clear", onCheckedChange = {
+        LabeledOptionCheckbox(checked = clear, label = "Clear", onCheckedChange = {
+            onCheckedChange(it)
             clear = it
             if (clear) {
                 onColorChange(Transparent)
@@ -108,7 +115,7 @@ private fun ColorInput_Preview() {
             .fillMaxSize()
             .background(White)
     ) {
-        ColorInput(label = "asd", initValue = Transparent, onColorChange = {})
+        ColorInput(label = "asd", initValue = Transparent, onColorChange = {}, defaultClear = false, onCheckedChange = {})
     }
 }
 

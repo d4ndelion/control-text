@@ -3,7 +3,7 @@ package com.dandelion.controltext.data
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,24 +28,30 @@ data class TextFieldOptions(
     override var paddingBottom: Dp? = null,
     override var borderWidth: Dp = 1.dp,
     override var borderColor: Color = Black,
+    override var isBorderColorClear: Boolean = false,
     override var background: Color = White,
+    override var isBackgroundClear: Boolean = true,
     override var shadowColor: Color = Black,
-    override var shadowOpacity: Dp = 4.dp,
+    override var isShadowColorClear: Boolean = false,
+    override var shadowOpacity: Dp = 10.dp,
     override var shadowOffsetX: Dp = 0.dp,
     override var shadowOffsetY: Dp = 0.dp,
     override var shadowSize: Dp = 0.dp,
     override var font: Item<FontFamily> = steagalFontRegular,
     override var fontSize: TextUnit = 10.sp,
     override var textColor: Color = Black,
+    override var isTextColorClear: Boolean = false,
     override var lineSpacing: TextUnit = TextUnit.Unspecified,
     override var lineCount: Int = 0,
     override var isScrollable: Boolean = true,
     override var textAlignment: Item<TextAlign> = left,
     override var underlineThickness: Dp = 0.dp,
     override var underlineColor: Color = Black,
+    override var isUnderlineColorClear: Boolean = false,
     var dynamicHeight: Boolean = false, // todo
     var defaultText: String = "",
     var defaultTextColor: Color = Black,
+    var isDefaultTextColorClear: Boolean = false,
     var maxCharacters: Int = 0,
     var secureTextEntry: Boolean = false,
     var keyboardType: Item<KeyboardType> = text,
@@ -55,7 +61,7 @@ data class TextFieldOptions(
     var firstResponder: Boolean = false
 ) : CommonOptions {
     override fun toString() = """  
-            Input is disabled.
+            Input is enabled.
             radius = $radius
 
     Position
@@ -128,8 +134,11 @@ fun TextFieldOptions.toTextOptions() = TextOptions(
     paddingBottom,
     borderWidth,
     borderColor,
+    isBorderColorClear,
     background,
+    isBackgroundClear,
     shadowColor,
+    isShadowColorClear,
     shadowOpacity,
     shadowOffsetX,
     shadowOffsetY,
@@ -137,17 +146,21 @@ fun TextFieldOptions.toTextOptions() = TextOptions(
     font,
     fontSize,
     textColor,
+    isTextColorClear,
     lineSpacing,
     lineCount,
     isScrollable,
     textAlignment,
     underlineThickness,
     underlineColor,
+    isUnderlineColorClear,
     content = "",
     link = "",
-    linkColor = Black,
+    linkColor = Blue,
+    isLinkColorClear = false,
     linkFont = steagalFontRegular,
     linkFontSize = 10.sp,
-    linkUnderlineColor = Transparent,
+    linkUnderlineColor = Blue,
+    isLinkUnderlineColorClear = false,
     linkUnderlineThickness = 0.dp
 )

@@ -4,7 +4,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -28,27 +27,34 @@ data class TextOptions(
     override var paddingBottom: Dp? = null,
     override var borderWidth: Dp = 1.dp,
     override var borderColor: Color = Black,
+    override var isBorderColorClear: Boolean = false,
     override var background: Color = White,
+    override var isBackgroundClear: Boolean = true,
     override var shadowColor: Color = Black,
-    override var shadowOpacity: Dp = 4.dp,
+    override var isShadowColorClear: Boolean = false,
+    override var shadowOpacity: Dp = 10.dp,
     override var shadowOffsetX: Dp = 0.dp,
     override var shadowOffsetY: Dp = 0.dp,
     override var shadowSize: Dp = 0.dp,
     override var font: Item<FontFamily> = steagalFontRegular,
     override var fontSize: TextUnit = 10.sp,
     override var textColor: Color = Black,
+    override var isTextColorClear: Boolean = false,
     override var lineSpacing: TextUnit = TextUnit.Unspecified,
     override var lineCount: Int = 0,
     override var isScrollable: Boolean = true,
     override var textAlignment: Item<TextAlign> = left,
     override var underlineThickness: Dp = 0.dp,
     override var underlineColor: Color = Black,
+    override var isUnderlineColorClear: Boolean = false,
     var content: String = "",
     var link: String = "",
     var linkColor: Color = Blue,
+    var isLinkColorClear: Boolean = false,
     var linkFont: Item<FontFamily> = steagalFontRegular,
     var linkFontSize: TextUnit = 10.sp,
     var linkUnderlineColor: Color = Blue,
+    var isLinkUnderlineColorClear: Boolean = false,
     var linkUnderlineThickness: Dp = 1.dp
 ) : CommonOptions {
     override fun toString() = """  
@@ -78,7 +84,7 @@ data class TextOptions(
             borderColor = RGB(${borderColor.red.times(255).toInt()} ${borderColor.green.times(255).toInt()} ${borderColor.blue.times(255).toInt()})
 
     Background
-            background = $background
+            background = RGB(${background.red.times(255).toInt()} ${background.green.times(255).toInt()} ${background.blue.times(255).toInt()})
             shadowColor = RGB(${shadowColor.red.times(255).toInt()} ${shadowColor.green.times(255).toInt()} ${shadowColor.blue.times(255).toInt()})
             shadowOpacity = $shadowOpacity
             shadowOffsetX = $shadowOffsetX
@@ -124,8 +130,11 @@ fun TextOptions.toTextFieldOptions() = TextFieldOptions(
     paddingBottom,
     borderWidth,
     borderColor,
+    isBorderColorClear,
     background,
+    isBackgroundClear,
     shadowColor,
+    isShadowColorClear,
     shadowOpacity,
     shadowOffsetX,
     shadowOffsetY,
@@ -133,14 +142,17 @@ fun TextOptions.toTextFieldOptions() = TextFieldOptions(
     font,
     fontSize,
     textColor,
+    isTextColorClear,
     lineSpacing,
     lineCount,
     isScrollable,
     textAlignment,
     underlineThickness,
     underlineColor,
+    isUnderlineColorClear,
     defaultText = "",
-    defaultTextColor = Transparent,
+    defaultTextColor = Black,
+    isDefaultTextColorClear = false,
     maxCharacters = 0,
     secureTextEntry = false,
     keyboardType = text,

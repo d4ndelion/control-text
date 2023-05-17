@@ -130,7 +130,13 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                         append(beforeLink)
                     }
                     withAnnotation(ANNOTATION_TAG_LINK_UNDERLINE, annotation = ANNOTATION_IGNORE) {
-                        withStyle(SpanStyle(color = linkColor, fontFamily = linkFont.item, fontSize = linkFontSize)) {
+                        withStyle(
+                            SpanStyle(
+                                color = if (isLinkColorClear) Transparent else linkColor,
+                                fontFamily = linkFont.item,
+                                fontSize = linkFontSize
+                            )
+                        ) {
                             append(link)
                         }
                     }
@@ -149,14 +155,17 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
             modifier = modifier
                 .then(
                     if (borderWidth != 0.dp) {
-                        Modifier.border(BorderStroke(borderWidth, borderColor), RoundedCornerShape(radius))
+                        Modifier.border(
+                            BorderStroke(borderWidth, if (isBorderColorClear) Transparent else borderColor),
+                            RoundedCornerShape(radius)
+                        )
                     } else Modifier
                 )
                 .clip(RoundedCornerShape(radius))
-                .background(borderColor)
+                .background(if (isBackgroundClear) Transparent else borderColor)
                 .padding(borderWidth)
                 .shadow(
-                    color = shadowColor,
+                    color = if (isShadowColorClear) Transparent else shadowColor,
                     spread = shadowSize,
                     blurRadius = shadowOpacity,
                     offsetX = shadowOffsetX,
@@ -167,7 +176,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                 text = fieldValue,
                 style = TextStyle.Default.copy(
                     fontSize = fontSize,
-                    color = textColor,
+                    color = if (isTextColorClear) Transparent else textColor,
                     lineHeight = lineSpacing,
                     textAlign = textAlignment.item,
                     fontFamily = font.item
@@ -190,7 +199,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                 val rightX = bound.bottomRight.x
                                 val rightY = bound.bottomRight.y
                                 drawLine(
-                                    color = linkUnderlineColor,
+                                    color = if (isLinkColorClear) Transparent else linkUnderlineColor,
                                     strokeWidth = linkUnderlineThickness.toPx(),
                                     start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                     end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
@@ -210,7 +219,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = underlineColor,
+                                        color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                         end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
@@ -222,7 +231,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = underlineColor,
+                                        color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                         end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
@@ -244,7 +253,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = underlineColor,
+                                        color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                         end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
@@ -255,9 +264,9 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                     }
                 },
                 modifier = Modifier
-                    .background(borderColor)
+                    .background(if (isBackgroundClear) Transparent else borderColor)
                     .clip(RoundedCornerShape(radius))
-                    .background(background)
+                    .background(if (isBackgroundClear) Transparent else background)
                     .defaultMinSize(minHeight = minHeight, minWidth = minWidth)
                     .then(if (height == 0.dp) Modifier else Modifier.height(height))
                     .then(if (width == 0.dp) Modifier else Modifier.width(width))
@@ -313,14 +322,17 @@ fun ResultTextField(
             modifier = modifier
                 .then(
                     if (borderWidth != 0.dp) {
-                        Modifier.border(BorderStroke(borderWidth, borderColor), RoundedCornerShape(radius))
+                        Modifier.border(
+                            BorderStroke(borderWidth, if (isBorderColorClear) Transparent else borderColor),
+                            RoundedCornerShape(radius)
+                        )
                     } else Modifier
                 )
                 .clip(RoundedCornerShape(radius))
-                .background(borderColor)
+                .background(if (isBackgroundClear) Transparent else borderColor)
                 .padding(borderWidth)
                 .shadow(
-                    color = shadowColor,
+                    color = if (isShadowColorClear) Transparent else shadowColor,
                     spread = shadowSize,
                     blurRadius = shadowOpacity,
                     offsetX = shadowOffsetX,
@@ -339,7 +351,7 @@ fun ResultTextField(
                 },
                 textStyle = TextStyle.Default.copy(
                     fontSize = fontSize,
-                    color = textColor,
+                    color = if (isTextColorClear) Transparent else textColor,
                     lineHeight = lineSpacing,
                     textAlign = textAlignment.item,
                     fontFamily = font.item
@@ -356,7 +368,7 @@ fun ResultTextField(
                         placeholder = {
                             Text(
                                 text = defaultText,
-                                color = if (defaultTextColor != Transparent) defaultTextColor else textColor,
+                                color = if (isDefaultTextColorClear) Transparent else defaultTextColor,
                                 fontFamily = font.item,
                                 fontSize = fontSize
                             )
@@ -385,7 +397,7 @@ fun ResultTextField(
                                 val rightX = bound.bottomRight.x
                                 val rightY = bound.bottomRight.y
                                 drawLine(
-                                    color = underlineColor,
+                                    color = if (isUnderlineColorClear) Transparent else underlineColor,
                                     strokeWidth = underlineThickness.toPx(),
                                     start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                     end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
@@ -395,9 +407,9 @@ fun ResultTextField(
                     }
                 },
                 modifier = Modifier
-                    .background(borderColor)
+                    .background(if (isBackgroundClear) Transparent else borderColor)
                     .clip(RoundedCornerShape(radius))
-                    .background(background)
+                    .background(if (isBackgroundClear) Transparent else background)
                     .focusRequester(focusRequester ?: FocusRequester())
                     .focusProperties {
                         next = nextFocusRequester ?: FocusRequester()
