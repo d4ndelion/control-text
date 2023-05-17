@@ -118,4 +118,4 @@ fun TextLayoutResult.getBoundingBoxes(
     }
 }
 
-fun String.isNegativeNumber() = isDigitsOnly() || first() == '-'
+fun String.isNegativeNumber() = matches(Regex("^[-+]?\\d*\$"))

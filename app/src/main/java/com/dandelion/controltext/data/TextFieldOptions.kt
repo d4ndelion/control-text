@@ -49,7 +49,7 @@ data class TextFieldOptions(
     var maxCharacters: Int = 0,
     var secureTextEntry: Boolean = false,
     var keyboardType: Item<KeyboardType> = text,
-    var executionDelay: Long = 0L, // todo перевести в float sec
+    var executionDelay: Float = 0f,
     var identifier: String = "",
     var nextResponder: String = "",
     var firstResponder: Boolean = false

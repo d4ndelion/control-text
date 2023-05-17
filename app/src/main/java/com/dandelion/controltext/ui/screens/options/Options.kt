@@ -36,9 +36,11 @@ import com.dandelion.controltext.data.toTextFieldOptions
 import com.dandelion.controltext.data.toTextOptions
 import com.dandelion.controltext.setScreen
 import com.dandelion.controltext.ui.components.ColorInput
+import com.dandelion.controltext.ui.components.FloatNumericField
 import com.dandelion.controltext.ui.components.ItemDropdown
 import com.dandelion.controltext.ui.components.LabeledCheckbox
 import com.dandelion.controltext.ui.components.LabeledOptionCheckbox
+import com.dandelion.controltext.ui.components.NegativeNumericField
 import com.dandelion.controltext.ui.components.NumericField
 import com.dandelion.controltext.ui.components.NumericFieldNullable
 import com.dandelion.controltext.ui.components.SectionText
@@ -100,8 +102,8 @@ private fun Configuration(currentField: CommonOptions) {
         with(currentField) {
             SectionText(text = "Position")
             NumericField("Radius", radius) { radius = it.dp }
-            NumericField("X offset", xOffset) { xOffset = it.dp }
-            NumericField("Y offset", yOffset) { yOffset = it.dp }
+            NegativeNumericField("X offset", xOffset) { xOffset = it.dp }
+            NegativeNumericField("Y offset", yOffset) { yOffset = it.dp }
             ItemDropdown(
                 label = "Relative position",
                 initialItem = relativePosition,
@@ -125,8 +127,8 @@ private fun Configuration(currentField: CommonOptions) {
             ColorInput("Background color", background) { background = it }
             ColorInput("Shadow color", shadowColor) { shadowColor = it }
             NumericField("Shadow opacity", shadowOpacity) { shadowOpacity = it.dp }
-            NumericField("Shadow offset x", shadowOffsetX) { shadowOffsetX = it.dp }
-            NumericField("Shadow offset y", shadowOffsetY) { shadowOffsetY = it.dp }
+            NegativeNumericField("Shadow offset x", shadowOffsetX) { shadowOffsetX = it.dp }
+            NegativeNumericField("Shadow offset y", shadowOffsetY) { shadowOffsetY = it.dp }
             NumericField("Shadow size", shadowSize) { shadowSize = it.dp }
             SectionText(text = "Text")
             ItemDropdown(
@@ -189,7 +191,7 @@ fun TextFieldFeatures(currentField: TextFieldOptions) {
             items = keyboardTypes,
             onItemClick = { keyboardType = it },
             item = { Text(it.name) })
-        NumericField("Execution delay", executionDelay.toInt()) { executionDelay = it.toLong() }
+        FloatNumericField("Execution delay", executionDelay) { executionDelay = it }
         TextOptionField("Identifier", identifier) { identifier = it }
         TextOptionField("Next responder", nextResponder) { nextResponder = it }
         LabeledOptionCheckbox("First responder", firstResponder) { firstResponder = it }

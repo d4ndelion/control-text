@@ -330,7 +330,7 @@ fun ResultTextField(
             BasicTextField(value = fieldValue,
                 onValueChange = {
                     if (it.text.length <= maxCharacters || maxCharacters == 0 && !isEndOfLine) {
-                        Thread.sleep(executionDelay)
+                        Thread.sleep(executionDelay.times(1000).toLong())
                         fieldValue = it
                         Log.d("ResultScreen input", it.text)
                     } else {
