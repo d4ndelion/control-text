@@ -132,6 +132,7 @@ private fun Configuration(currentField: CommonOptions) {
             ColorInput("Background color", background, isBackgroundClear, { isBackgroundClear = it }) {
                 background = it
             }
+            SectionText(text = "Shadow")
             ColorInput("Shadow color", shadowColor, isShadowColorClear, { isShadowColorClear = it }) {
                 shadowColor = it
             }
