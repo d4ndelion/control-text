@@ -36,7 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusDirection.Companion.Next
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
@@ -85,6 +85,22 @@ fun OutputScreenContent() {
                     .weight(1f)
                     .background(Color.White)
             ) {
+                val requesters = cachedFields.map {
+                    when (it) {
+                        is TextFieldOptions -> Pair(it.identifier, FocusRequester())
+                        else -> Pair("", FocusRequester())
+                    }
+                }
+                val nextRequesters = cachedFields.map { requester ->
+                    when (requester) {
+                        is TextFieldOptions -> Pair(
+                            requesters.find { requester.identifier == it.first },
+                            requesters.find { requester.nextResponder == it.first }
+                        )
+
+                        else -> Pair(Pair("", FocusRequester()), Pair("", FocusRequester()))
+                    }
+                }
                 repeat(cachedFields.size) { num ->
                     val alignmentModifier = Modifier
                         .offset(cachedFields[num].xOffset, cachedFields[num].yOffset)
@@ -98,8 +114,9 @@ fun OutputScreenContent() {
                         is TextFieldOptions -> ResultTextField(
                             modifier = alignmentModifier,
                             options = cachedFields[num] as TextFieldOptions,
-                            focusRequester = FocusRequester(),
-                            nextFocusRequester = FocusRequester()
+                            focusRequester = requesters[num].second,
+                            nextFocusRequester = nextRequesters[num].second?.second,
+                            isFirstResponder = (cachedFields[num] as TextFieldOptions).firstResponder
                         )
                     }
                 }
@@ -148,10 +165,11 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
             }
         })
     }
-    with(options) {
 
-        var onDraw: DrawScope.() -> Unit by remember { mutableStateOf({}) }
-        var onDrawTextUnderline: DrawScope.() -> Unit by remember { mutableStateOf({}) }
+    var onDraw: DrawScope.() -> Unit by remember { mutableStateOf({}) }
+    var onDrawTextUnderline: DrawScope.() -> Unit by remember { mutableStateOf({}) }
+
+    with(options) {
         Box(
             modifier = modifier
                 .then(
@@ -222,7 +240,10 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     drawLine(
                                         color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
-                                        start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
+                                        start = bound.bottomLeft.copy(
+                                            leftX + paddingLeft,
+                                            leftY + paddingTop.toPx()
+                                        ),
                                         end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
                                     )
                                 }
@@ -234,7 +255,10 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     drawLine(
                                         color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
-                                        start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
+                                        start = bound.bottomLeft.copy(
+                                            leftX + paddingLeft,
+                                            leftY + paddingTop.toPx()
+                                        ),
                                         end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
                                     )
                                 }
@@ -256,7 +280,10 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     drawLine(
                                         color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
-                                        start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
+                                        start = bound.bottomLeft.copy(
+                                            leftX + paddingLeft,
+                                            leftY + paddingTop.toPx()
+                                        ),
                                         end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
                                     )
                                 }
@@ -295,7 +322,6 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -348,7 +374,9 @@ fun ResultTextField(
                         fieldValue = it
                         Log.d("ResultScreen input", it.text)
                     } else {
-                        focusManager.moveFocus(FocusDirection.Next)
+                        if (nextFocusRequester == null) {
+                            focusManager.moveFocus(Next)
+                        } else nextFocusRequester.requestFocus()
                     }
                 },
                 textStyle = TextStyle.Default.copy(
@@ -383,7 +411,10 @@ fun ResultTextField(
                         enabled = true
                     )
                 },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = keyboardType.item, autoCorrect = false),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = keyboardType.item,
+                    autoCorrect = false
+                ),
                 onTextLayout = { layoutResult ->
                     val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
                     onDrawTextUnderline = {
