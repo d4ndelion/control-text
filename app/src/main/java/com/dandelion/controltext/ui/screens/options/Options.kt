@@ -82,7 +82,10 @@ fun OptionsScreenContent(fieldCount: Int) {
         })
         Configuration(cachedFields[fieldIndex])
         Button({
-            Log.d("Field number ${fieldIndex + 1}", cachedFields[fieldIndex].toString())
+            Log.d(
+                "Field number ${fieldIndex + 1}",
+                "Field number ${fieldIndex + 1}${cachedFields[fieldIndex]}"
+            )
             keyboardController.clearFocus()
             coroutineScope.launch {
                 scrollState.scrollTo(0)
