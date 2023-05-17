@@ -40,6 +40,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Transparent
@@ -316,6 +317,7 @@ fun ResultTextField(
     var isEndOfLine by remember { mutableStateOf(false) }
     var onDrawTextUnderline: DrawScope.() -> Unit by remember { mutableStateOf({}) }
     var fieldValue by remember { mutableStateOf(TextFieldValue("")) }
+    var isFocused by remember { mutableStateOf(false) }
 
     with(options) {
         Box(
@@ -415,7 +417,10 @@ fun ResultTextField(
                         next = nextFocusRequester ?: FocusRequester()
                     }
                     .defaultMinSize(minHeight = minHeight, minWidth = minWidth)
-                    .then(if (height == 0.dp) Modifier else Modifier.height(height))
+                    .then(
+                        if (height == 0.dp || (isFocused && dynamicHeight)) Modifier.defaultMinSize(minHeight = height)
+                        else Modifier.height(height)
+                    )
                     .then(if (width == 0.dp) Modifier else Modifier.width(width))
                     .verticalScroll(rememberScrollState(), isScrollable)
                     .indicatorLine(
@@ -429,6 +434,9 @@ fun ResultTextField(
                     .drawBehind {
                         onDrawTextUnderline()
                         onDraw()
+                    }
+                    .onFocusChanged {
+                        isFocused = it.isFocused
                     })
         }
     }

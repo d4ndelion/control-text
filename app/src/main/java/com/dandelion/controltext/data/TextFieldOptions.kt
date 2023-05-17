@@ -48,7 +48,7 @@ data class TextFieldOptions(
     override var underlineThickness: Dp = 0.dp,
     override var underlineColor: Color = Black,
     override var isUnderlineColorClear: Boolean = false,
-    var dynamicHeight: Boolean = false, // todo
+    var dynamicHeight: Boolean = false,
     var defaultText: String = "",
     var defaultTextColor: Color = Black,
     var isDefaultTextColorClear: Boolean = false,

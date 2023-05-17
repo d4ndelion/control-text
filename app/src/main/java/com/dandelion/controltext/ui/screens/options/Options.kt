@@ -199,6 +199,7 @@ fun TextFeatures(currentField: TextOptions) {
 @Composable
 fun TextFieldFeatures(currentField: TextFieldOptions) {
     with(currentField) {
+        LabeledOptionCheckbox("Dynamic height", dynamicHeight) { dynamicHeight = it }
         TextOptionField("Default text", defaultText) { defaultText = it }
         ColorInput(
             "Default text color",
