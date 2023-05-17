@@ -147,7 +147,11 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
         var onDrawTextUnderline: DrawScope.() -> Unit by remember { mutableStateOf({}) }
         Box(
             modifier = modifier
-                .border(BorderStroke(borderWidth, borderColor), RoundedCornerShape(radius))
+                .then(
+                    if (borderWidth != 0.dp) {
+                        Modifier.border(BorderStroke(borderWidth, borderColor), RoundedCornerShape(radius))
+                    } else Modifier
+                )
                 .clip(RoundedCornerShape(radius))
                 .background(borderColor)
                 .padding(borderWidth)
@@ -307,7 +311,11 @@ fun ResultTextField(
     with(options) {
         Box(
             modifier = modifier
-                .border(BorderStroke(borderWidth, borderColor), RoundedCornerShape(radius))
+                .then(
+                    if (borderWidth != 0.dp) {
+                        Modifier.border(BorderStroke(borderWidth, borderColor), RoundedCornerShape(radius))
+                    } else Modifier
+                )
                 .clip(RoundedCornerShape(radius))
                 .background(borderColor)
                 .padding(borderWidth)
