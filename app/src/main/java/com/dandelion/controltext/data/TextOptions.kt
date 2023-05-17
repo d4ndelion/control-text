@@ -85,7 +85,9 @@ data class TextOptions(
 
     Background
             background = RGB(${background.red.times(255).toInt()} ${background.green.times(255).toInt()} ${background.blue.times(255).toInt()})
+            background clear = $isBackgroundClear
             shadowColor = RGB(${shadowColor.red.times(255).toInt()} ${shadowColor.green.times(255).toInt()} ${shadowColor.blue.times(255).toInt()})
+            shadowColor clear = $isShadowColorClear
             shadowOpacity = $shadowOpacity
             shadowOffsetX = $shadowOffsetX
             shadowOffsetY = $shadowOffsetY
@@ -95,6 +97,7 @@ data class TextOptions(
             font = ${font.name}
             fontSize = $fontSize
             textColor = RGB(${textColor.red.times(255).toInt()} ${textColor.green.times(255).toInt()} ${textColor.blue.times(255).toInt()})
+            textColor clear = $isTextColorClear
             lineSpacing = $lineSpacing
             lineCount = $lineCount
             isScrollable = $isScrollable
@@ -103,14 +106,17 @@ data class TextOptions(
     Underline
             underlineThickness = $underlineThickness
             underlineColor = RGB(${underlineColor.red.times(255).toInt()} ${underlineColor.green.times(255).toInt()} ${underlineColor.blue.times(255).toInt()})
+            underlineColor clear = $isUnderlineColorClear
 
     Features
             content = $content
             link = $link
             linkColor = RGB(${linkColor.red.times(255).toInt()} ${linkColor.green.times(255).toInt()} ${linkColor.blue.times(255).toInt()})
+            linkColor clear = $isLinkColorClear
             linkFont = ${linkFont.name}
             linkFontSize = $linkFontSize
-            linkUnderlineColor = $linkUnderlineColor
+            linkUnderlineColor = RGB(${linkUnderlineColor.red.times(255).toInt()} ${linkUnderlineColor.green.times(255).toInt()} ${linkUnderlineColor.blue.times(255).toInt()}) 
+            linkUnderLineColor clear = $isLinkUnderlineColorClear
             linkUnderlineThickness = $linkUnderlineThickness
     """
 }

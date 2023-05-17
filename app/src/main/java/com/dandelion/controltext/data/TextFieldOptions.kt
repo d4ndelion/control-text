@@ -87,7 +87,9 @@ data class TextFieldOptions(
 
     Background
             background = RGB(${background.red.times(255).toInt()} ${background.green.times(255).toInt()} ${background.blue.times(255).toInt()})
+            background clear = $isBackgroundClear
             shadowColor = RGB(${shadowColor.red.times(255).toInt()} ${shadowColor.green.times(255).toInt()} ${shadowColor.blue.times(255).toInt()})
+            shadowColor clear = $isShadowColorClear
             shadowOpacity = $shadowOpacity
             shadowOffsetX = $shadowOffsetX
             shadowOffsetY = $shadowOffsetY
@@ -97,6 +99,7 @@ data class TextFieldOptions(
             font = ${font.name}
             fontSize = $fontSize
             textColor = RGB(${textColor.red.times(255).toInt()} ${textColor.green.times(255).toInt()} ${textColor.blue.times(255).toInt()})
+            textColor clear = $isTextColorClear
             lineSpacing = $lineSpacing
             lineCount = $lineCount
             isScrollable = $isScrollable
@@ -105,10 +108,12 @@ data class TextFieldOptions(
     Underline
             underlineThickness = $underlineThickness
             underlineColor = RGB(${underlineColor.red.times(255).toInt()} ${underlineColor.green.times(255).toInt()} ${underlineColor.blue.times(255).toInt()})
+            underlineColor clear = $isUnderlineColorClear
 
     Features
             defaultText = $defaultText
             defaultTextColor = RGB(${defaultTextColor.red.times(255).toInt()} ${defaultTextColor.green.times(255).toInt()} ${defaultTextColor.blue.times(255).toInt()})
+            defaultTextColor clear = $isDefaultTextColorClear
             maxCharacters = $maxCharacters
             secureTextEntry = $secureTextEntry
             keyboardType = ${keyboardType.name}
