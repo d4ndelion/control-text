@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -84,9 +85,17 @@ fun OutputScreenContent() {
                     .background(Color.White)
             ) {
                 repeat(cachedFields.size) { num ->
+                    val alignmentModifier = Modifier
+                        .offset(cachedFields[num].xOffset, cachedFields[num].yOffset)
+                        .align(cachedFields[num].relativePosition.item)
                     when (cachedFields[num]) {
-                        is TextOptions -> ResultText(cachedFields[num] as TextOptions)
+                        is TextOptions -> ResultText(
+                            modifier = alignmentModifier,
+                            options = cachedFields[num] as TextOptions
+                        )
+
                         is TextFieldOptions -> ResultTextField(
+                            modifier = alignmentModifier,
                             options = cachedFields[num] as TextFieldOptions,
                             focusRequester = FocusRequester(),
                             nextFocusRequester = FocusRequester()
@@ -261,6 +270,13 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                         onDrawTextUnderline()
                         onDraw()
                     }
+                    .padding(
+                        if (paddingLeft == null && paddingRight == null && paddingBottom == null) {
+                            PaddingValues(paddingTop)
+                        } else PaddingValues(
+                            paddingLeft ?: 0.dp, paddingTop, paddingRight ?: 0.dp, paddingBottom ?: 0.dp
+                        ),
+                    )
             )
         }
     }

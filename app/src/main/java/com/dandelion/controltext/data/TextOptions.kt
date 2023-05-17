@@ -2,7 +2,9 @@ package com.dandelion.controltext.data
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -24,28 +26,28 @@ data class TextOptions(
     override var paddingRight: Dp? = 0.dp,
     override var paddingBottom: Dp? = 0.dp,
     override var borderWidth: Dp = 0.dp,
-    override var borderColor: Color = Color.Black,
-    override var background: Color = Color.White,
-    override var shadowColor: Color = Color.Black,
+    override var borderColor: Color = White,
+    override var background: Color = White,
+    override var shadowColor: Color = White,
     override var shadowOpacity: Dp = 0.dp,
     override var shadowOffsetX: Dp = 0.dp,
     override var shadowOffsetY: Dp = 0.dp,
     override var shadowSize: Dp = 0.dp,
     override var font: Item<FontFamily> = steagalFontRegular,
     override var fontSize: TextUnit = 10.sp,
-    override var textColor: Color = Color.Black,
+    override var textColor: Color = Black,
     override var lineSpacing: TextUnit = TextUnit.Unspecified,
     override var lineCount: Int = 0,
     override var isScrollable: Boolean = true,
     override var textAlignment: Item<TextAlign> = left,
     override var underlineThickness: Dp = 0.dp,
-    override var underlineColor: Color = Color.Black,
+    override var underlineColor: Color = Black,
     var content: String = "",
     var link: String = "",
-    var linkColor: Color = Color.Black,
+    var linkColor: Color = Black,
     var linkFont: Item<FontFamily> = steagalFontRegular,
     var linkFontSize: TextUnit = 10.sp,
-    var linkUnderlineColor: Color = Transparent,
+    var linkUnderlineColor: Color = White,
     var linkUnderlineThickness: Dp = 0.dp
 ) : CommonOptions {
     override fun toString() = """  
