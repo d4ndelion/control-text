@@ -13,7 +13,6 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.ResolvedTextDirection.Ltr
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -119,3 +118,5 @@ fun TextLayoutResult.getBoundingBoxes(
 }
 
 fun String.isNegativeNumber() = matches(Regex("^[-+]?\\d*\$"))
+
+fun Color.toReadableString() = "RGB(${red.times(255).toInt()} ${green.times(255).toInt()} ${blue.times(255).toInt()})"

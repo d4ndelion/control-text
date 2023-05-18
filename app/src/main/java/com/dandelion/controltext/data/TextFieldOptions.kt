@@ -17,6 +17,7 @@ import com.dandelion.controltext.data.items.left
 import com.dandelion.controltext.data.items.steagalFontRegular
 import com.dandelion.controltext.data.items.text
 import com.dandelion.controltext.data.items.topStart
+import com.dandelion.controltext.util.toReadableString
 
 data class TextFieldOptions(
     override var radius: Dp = 0.dp,
@@ -88,12 +89,12 @@ data class TextFieldOptions(
 
     Border
             borderWidth= $borderWidth
-            borderColor = RGB(${borderColor.red.times(255).toInt()} ${borderColor.green.times(255).toInt()} ${borderColor.blue.times(255).toInt()})
+            borderColor = ${borderColor.toReadableString()}
 
     Background
-            background = RGB(${background.red.times(255).toInt()} ${background.green.times(255).toInt()} ${background.blue.times(255).toInt()})
+            background = ${background.toReadableString()}
             background clear = $isBackgroundClear
-            shadowColor = RGB(${shadowColor.red.times(255).toInt()} ${shadowColor.green.times(255).toInt()} ${shadowColor.blue.times(255).toInt()})
+            shadowColor = ${shadowColor.toReadableString()}
             shadowColor clear = $isShadowColorClear
             shadowOpacity = $shadowOpacity
             shadowOffsetX = $shadowOffsetX
@@ -103,7 +104,7 @@ data class TextFieldOptions(
     Text
             font = ${font.name}
             fontSize = $fontSize
-            textColor = RGB(${textColor.red.times(255).toInt()} ${textColor.green.times(255).toInt()} ${textColor.blue.times(255).toInt()})
+            textColor = ${textColor.toReadableString()}
             textColor clear = $isTextColorClear
             lineSpacing = $lineSpacing
             lineCount = $lineCount
@@ -112,12 +113,12 @@ data class TextFieldOptions(
 
     Underline
             underlineThickness = $underlineThickness
-            underlineColor = RGB(${underlineColor.red.times(255).toInt()} ${underlineColor.green.times(255).toInt()} ${underlineColor.blue.times(255).toInt()})
+            underlineColor = ${underlineColor.toReadableString()}
             underlineColor clear = $isUnderlineColorClear
 
     Features
             defaultText = $defaultText
-            defaultTextColor = RGB(${defaultTextColor.red.times(255).toInt()} ${defaultTextColor.green.times(255).toInt()} ${defaultTextColor.blue.times(255).toInt()})
+            defaultTextColor = ${defaultTextColor.toReadableString()}
             defaultTextColor clear = $isDefaultTextColorClear
             maxCharacters = $maxCharacters
             secureTextEntry = $secureTextEntry
