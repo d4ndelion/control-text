@@ -43,6 +43,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -181,9 +182,6 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                         )
                     } else Modifier
                 )
-                .clip(RoundedCornerShape(radius))
-                .background(if (isBackgroundClear) Transparent else borderColor)
-                .padding(borderWidth)
                 .shadow(
                     color = if (isShadowColorClear) Transparent else shadowColor,
                     spread = shadowSize,
@@ -191,6 +189,9 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                     offsetX = shadowOffsetX,
                     offsetY = shadowOffsetY
                 )
+                .clip(RoundedCornerShape(radius))
+                .background(if (isBackgroundClear) Transparent else borderColor)
+                .padding(borderWidth)
         ) {
             BasicText(
                 text = fieldValue,
@@ -366,9 +367,6 @@ fun ResultTextField(
                         )
                     } else Modifier
                 )
-                .clip(RoundedCornerShape(radius))
-                .background(if (isBackgroundClear) Transparent else borderColor)
-                .padding(borderWidth)
                 .shadow(
                     color = if (isShadowColorClear) Transparent else shadowColor,
                     spread = shadowSize,
@@ -376,6 +374,10 @@ fun ResultTextField(
                     offsetX = shadowOffsetX,
                     offsetY = shadowOffsetY
                 )
+                .clip(RoundedCornerShape(radius))
+                .background(if (isBackgroundClear) Transparent else borderColor)
+                .padding(borderWidth)
+
         ) {
             BasicTextField(value = fieldValue,
                 onValueChange = {
@@ -489,19 +491,30 @@ fun ResultTextField(
 @Preview
 @Composable
 private fun OutputScreenContent_Preview() {
-    val options by remember { mutableStateOf(TextFieldOptions(
-        width = 100.dp,
-        underlineColor = Color(0, 255, 0),
-        underlineThickness = 2.dp,
-        paddingTop = 20.dp,
-        paddingBottom = 10.dp,
-        paddingLeft = 30.dp
-    )) }
+    val options by remember {
+        mutableStateOf(
+            TextOptions(
+                width = 100.dp,
+                underlineColor = Color(0, 255, 0),
+                underlineThickness = 2.dp,
+                paddingTop = 20.dp,
+                paddingBottom = 10.dp,
+                paddingLeft = 30.dp,
+                background = Transparent,
+                isShadowColorClear = false,
+                shadowColor = Green,
+                shadowOpacity = 10.dp,
+                shadowOffsetX = 100.dp,
+                shadowOffsetY = 100.dp,
+                shadowSize = 60.dp
+            )
+        )
+    }
     Box(
         Modifier
             .fillMaxSize()
             .background(White)
     ) {
-        ResultTextField(options = options, focusRequester = FocusRequester(), nextFocusRequester = FocusRequester())
+        ResultText(options = options)
     }
 }
