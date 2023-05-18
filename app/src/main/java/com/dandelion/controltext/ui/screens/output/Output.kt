@@ -41,6 +41,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
@@ -122,9 +123,11 @@ fun OutputScreenContent() {
                     }
                 }
             }
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .background(LightGray), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(LightGray), contentAlignment = Alignment.Center
+            ) {
                 Button(onClick = {
                     setScreen(Enter)
                 }) {
@@ -185,12 +188,18 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                         )
                     } else Modifier
                 )
-                .shadow(
-                    color = if (isShadowColorClear) Transparent else shadowColor,
-                    spread = shadowSize,
-                    blurRadius = shadowOpacity,
-                    offsetX = shadowOffsetX,
-                    offsetY = shadowOffsetY
+                .then(
+                    if (isShadowColorClear) Modifier else {
+                        Modifier.shadow(
+                            color = shadowColor,
+                            opacity = shadowOpacity,
+                            radius = shadowRadius,
+                            offsetX = shadowOffsetX,
+                            offsetY = shadowOffsetY,
+                            width = shadowWidth,
+                            height = shadowHeight
+                        )
+                    }
                 )
                 .clip(RoundedCornerShape(radius))
                 .background(if (isBackgroundClear) Transparent else borderColor)
@@ -370,12 +379,18 @@ fun ResultTextField(
                         )
                     } else Modifier
                 )
-                .shadow(
-                    color = if (isShadowColorClear) Transparent else shadowColor,
-                    spread = shadowSize,
-                    blurRadius = shadowOpacity,
-                    offsetX = shadowOffsetX,
-                    offsetY = shadowOffsetY
+                .then(
+                    if (isShadowColorClear) Modifier else {
+                        Modifier.shadow(
+                            color = shadowColor,
+                            opacity = shadowOpacity,
+                            radius = shadowRadius,
+                            offsetX = shadowOffsetX,
+                            offsetY = shadowOffsetY,
+                            width = shadowWidth,
+                            height = shadowHeight
+                        )
+                    }
                 )
                 .clip(RoundedCornerShape(radius))
                 .background(if (isBackgroundClear) Transparent else borderColor)
@@ -391,7 +406,7 @@ fun ResultTextField(
                     } else {
                         if (nextFocusRequester == null) {
                             focusManager.moveFocus(Next)
-                        } else nextFocusRequester.requestFocus()
+                        }
                     }
                 },
                 textStyle = TextStyle.Default.copy(
@@ -499,7 +514,9 @@ private fun OutputScreenContent_Preview() {
             TextFieldOptions(
                 width = 40.dp,
                 height = 60.dp,
-                lineCount = 1
+                lineCount = 1,
+                isShadowColorClear = false,
+                shadowColor = Color(0, 255, 0),
             )
         )
     }
@@ -508,6 +525,11 @@ private fun OutputScreenContent_Preview() {
             .fillMaxSize()
             .background(White)
     ) {
-        ResultTextField(options = options, focusRequester = FocusRequester(), nextFocusRequester = FocusRequester())
+        ResultTextField(
+            modifier = Modifier.offset(100.dp, 100.dp),
+            options = options,
+            focusRequester = FocusRequester(),
+            nextFocusRequester = FocusRequester()
+        )
     }
 }

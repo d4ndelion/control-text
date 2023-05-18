@@ -1,14 +1,15 @@
 package com.dandelion.controltext.util
 
-import android.graphics.BlurMaskFilter
-import android.graphics.BlurMaskFilter.Blur.NORMAL
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.toComposePaint
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.ResolvedTextDirection.Ltr
 import androidx.compose.ui.unit.Dp
@@ -18,41 +19,35 @@ import kotlin.contracts.contract
 
 fun Modifier.shadow(
     color: Color = Color.Black,
-    borderRadius: Dp = 0.dp,
-    blurRadius: Dp = 0.dp,
+    opacity: Float = .7f,
+    radius: Dp = 10.dp,
     offsetY: Dp = 0.dp,
     offsetX: Dp = 0.dp,
-    spread: Dp = 0f.dp,
-    modifier: Modifier = Modifier
-) = this.then(
-    modifier.drawBehind {
-        this.drawIntoCanvas {
-            val paint = Paint()
-            val frameworkPaint = paint.asFrameworkPaint()
-            val spreadPixel = spread.toPx()
-            val leftPixel = (0f - spreadPixel) + offsetX.toPx()
-            val topPixel = (0f - spreadPixel) + offsetY.toPx()
-            val rightPixel = (this.size.width + spreadPixel)
-            val bottomPixel = (this.size.height + spreadPixel)
-
-            if (blurRadius != 0.dp) {
-                frameworkPaint.maskFilter =
-                    (BlurMaskFilter(blurRadius.toPx(), NORMAL))
-            }
-
-            frameworkPaint.color = color.toArgb()
-            it.drawRoundRect(
-                left = leftPixel,
-                top = topPixel,
-                right = rightPixel,
-                bottom = bottomPixel,
-                radiusX = borderRadius.toPx(),
-                radiusY = borderRadius.toPx(),
-                paint
-            )
-        }
+    width: Dp? = null,
+    height: Dp? = null
+) = drawBehind {
+    val shadowX = ((size.width - (width?.toPx() ?: size.width)) / 2) + offsetX.toPx()
+    val shadowY = ((size.height - (height?.toPx() ?: size.height)) / 2) + offsetY.toPx()
+    val rect = Rect(
+        Offset(shadowX, shadowY),
+        Size(width?.toPx() ?: size.width, height?.toPx() ?: size.height)
+    )
+    val frameworkPaint = Paint().asFrameworkPaint().apply {
+        this.color = Color.Transparent.toArgb()
+        this.setShadowLayer(radius.toPx(), 0f, 0f, color.copy(opacity).toArgb())
     }
-)
+    drawIntoCanvas {
+        it.drawRoundRect(
+            rect.left,
+            rect.top,
+            rect.right,
+            rect.bottom,
+            0f,
+            0f,
+            frameworkPaint.toComposePaint()
+        )
+    }
+}
 
 @OptIn(ExperimentalContracts::class)
 internal inline fun <R> fastMapRange(

@@ -136,10 +136,12 @@ private fun Configuration(currentField: CommonOptions) {
             ColorInput("Shadow color", shadowColor, isShadowColorClear, { isShadowColorClear = it }) {
                 shadowColor = it
             }
-            NumericField("Shadow opacity", shadowOpacity) { shadowOpacity = it.dp }
+            FloatNumericField("Shadow opacity", shadowOpacity, true) { shadowOpacity = it }
+            NumericField("Shadow radius", shadowRadius) { shadowRadius = it.dp }
             NegativeNumericField("Shadow offset x", shadowOffsetX) { shadowOffsetX = it.dp }
             NegativeNumericField("Shadow offset y", shadowOffsetY) { shadowOffsetY = it.dp }
-            NumericField("Shadow size", shadowSize) { shadowSize = it.dp }
+            NumericFieldNullable("Shadow width", shadowWidth) { shadowWidth = it?.dp }
+            NumericFieldNullable("Shadow height", shadowHeight) { shadowHeight = it?.dp }
             SectionText(text = "Text")
             ItemDropdown(
                 label = "Text font",

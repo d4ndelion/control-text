@@ -38,10 +38,12 @@ data class TextOptions(
     override var isBackgroundClear: Boolean = true,
     override var shadowColor: Color = Black,
     override var isShadowColorClear: Boolean = true,
-    override var shadowOpacity: Dp = 10.dp,
+    override var shadowOpacity: Float = .7f,
+    override var shadowRadius: Dp = 10.dp,
     override var shadowOffsetX: Dp = 0.dp,
     override var shadowOffsetY: Dp = 0.dp,
-    override var shadowSize: Dp = 0.dp,
+    override var shadowHeight: Dp? = null,
+    override var shadowWidth: Dp? = null,
     override var font: Item<FontFamily> = steagalFontRegular,
     override var fontSize: TextUnit = 10.sp,
     override var textColor: Color = Black,
@@ -95,9 +97,11 @@ data class TextOptions(
             shadowColor = ${shadowColor.toReadableString()}
             shadowColor clear = $isShadowColorClear
             shadowOpacity = $shadowOpacity
+            shadowRadius = $shadowRadius
             shadowOffsetX = $shadowOffsetX
             shadowOffsetY = $shadowOffsetY
-            shadowSize = $shadowSize
+            shadowWidth = $shadowWidth
+            shadowHeight = $shadowHeight
 
     Text
             font = ${font.name}
@@ -148,9 +152,11 @@ fun TextOptions.toTextFieldOptions() = TextFieldOptions(
     shadowColor,
     isShadowColorClear,
     shadowOpacity,
+    shadowRadius,
     shadowOffsetX,
     shadowOffsetY,
-    shadowSize,
+    shadowHeight,
+    shadowWidth,
     font,
     fontSize,
     textColor,

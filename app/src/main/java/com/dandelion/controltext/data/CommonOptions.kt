@@ -42,10 +42,12 @@ interface CommonOptions {
     var isBackgroundClear: Boolean
     var shadowColor: Color
     var isShadowColorClear: Boolean
-    var shadowOpacity: Dp
+    var shadowOpacity: Float
+    var shadowRadius: Dp
     var shadowOffsetX: Dp
     var shadowOffsetY: Dp
-    var shadowSize: Dp
+    var shadowWidth: Dp?
+    var shadowHeight: Dp?
     //</editor-fold>
 
     //<editor-fold desc="Text">

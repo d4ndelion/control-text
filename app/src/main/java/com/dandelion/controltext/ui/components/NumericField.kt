@@ -49,7 +49,7 @@ fun NumericField(label: String, initValue: Int, onValueChange: (Int) -> Unit) {
 }
 
 @Composable
-fun FloatNumericField(label: String, initValue: Float, onValueChange: (Float) -> Unit) {
+fun FloatNumericField(label: String, initValue: Float, isLimited: Boolean = false, onValueChange: (Float) -> Unit) {
     var value by remember(key1 = onValueChange) {
         mutableStateOf(initValue.toString())
     }
@@ -71,11 +71,19 @@ fun FloatNumericField(label: String, initValue: Float, onValueChange: (Float) ->
             value = value,
             onValueChange = {
                 if (it.length <= 6) {
-                    value = when (it.toFloatOrNull()) {
-                        null -> if (it.isEmpty()) "" else value
-                        else -> it
+                    if (isLimited) {
+                        value = when (it.toFloatOrNull()) {
+                            null -> if (it.isEmpty()) "" else value
+                            else -> if (it.toFloat() <= 1) it else ""
+                        }
+                        onValueChange(value.toFloatOrNull() ?: 0f)
+                    } else {
+                        value = when (it.toFloatOrNull()) {
+                            null -> if (it.isEmpty()) "" else value
+                            else -> it
+                        }
+                        onValueChange(value.toFloatOrNull() ?: 0f)
                     }
-                    onValueChange(value.toFloatOrNull() ?: 0f)
                 }
             }, keyboardOptions = KeyboardOptions(keyboardType = Phone), textStyle = TextStyle(fontSize = 18.sp)
         )
