@@ -41,9 +41,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
@@ -124,7 +122,9 @@ fun OutputScreenContent() {
                     }
                 }
             }
-            Box(modifier = Modifier.fillMaxWidth().background(LightGray), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .background(LightGray), contentAlignment = Alignment.Center) {
                 Button(onClick = {
                     setScreen(Enter)
                 }) {
@@ -228,7 +228,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = if (isUnderlineColorClear) Transparent else linkUnderlineColor,
+                                        color = if (isUnderlineColorClear || linkUnderlineThickness == 0.dp) Transparent else linkUnderlineColor,
                                         strokeWidth = linkUnderlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                         end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
@@ -252,7 +252,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = if (isUnderlineColorClear) Transparent else underlineColor,
+                                        color = if (isUnderlineColorClear || underlineThickness == 0.dp) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(
                                             leftX + paddingLeft,
@@ -267,7 +267,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = if (isUnderlineColorClear) Transparent else underlineColor,
+                                        color = if (isUnderlineColorClear || underlineThickness == 0.dp) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(
                                             leftX + paddingLeft,
@@ -295,7 +295,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = if (isUnderlineColorClear) Transparent else underlineColor,
+                                        color = if (isUnderlineColorClear || underlineThickness == 0.dp) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                         end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
@@ -448,7 +448,7 @@ fun ResultTextField(
                                 val rightX = bound.bottomRight.x
                                 val rightY = bound.bottomRight.y
                                 drawLine(
-                                    color = if (isUnderlineColorClear) Transparent else underlineColor,
+                                    color = if (isUnderlineColorClear || underlineThickness == 0.dp) Transparent else underlineColor,
                                     strokeWidth = underlineThickness.toPx(),
                                     start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                     end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
@@ -496,20 +496,10 @@ fun ResultTextField(
 private fun OutputScreenContent_Preview() {
     val options by remember {
         mutableStateOf(
-            TextOptions(
-                width = 100.dp,
-                underlineColor = Color(0, 255, 0),
-                underlineThickness = 2.dp,
-                paddingTop = 20.dp,
-                paddingBottom = 10.dp,
-                paddingLeft = 30.dp,
-                background = Transparent,
-                isShadowColorClear = false,
-                shadowColor = Green,
-                shadowOpacity = 10.dp,
-                shadowOffsetX = 100.dp,
-                shadowOffsetY = 100.dp,
-                shadowSize = 60.dp
+            TextFieldOptions(
+                width = 40.dp,
+                height = 60.dp,
+                lineCount = 1
             )
         )
     }
@@ -518,6 +508,6 @@ private fun OutputScreenContent_Preview() {
             .fillMaxSize()
             .background(White)
     ) {
-        ResultText(options = options)
+        ResultTextField(options = options, focusRequester = FocusRequester(), nextFocusRequester = FocusRequester())
     }
 }
