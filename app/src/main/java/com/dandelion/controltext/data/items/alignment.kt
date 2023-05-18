@@ -1,4 +1,4 @@
-package com.dandelion.controltext.data
+package com.dandelion.controltext.data.items
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter

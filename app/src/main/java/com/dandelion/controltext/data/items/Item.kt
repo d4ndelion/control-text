@@ -1,4 +1,4 @@
-package com.dandelion.controltext.data
+package com.dandelion.controltext.data.items
 
 interface Item<T> {
     val name: String

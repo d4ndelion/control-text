@@ -11,6 +11,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dandelion.controltext.data.items.Item
+import com.dandelion.controltext.data.items.left
+import com.dandelion.controltext.data.items.steagalFontRegular
+import com.dandelion.controltext.data.items.text
+import com.dandelion.controltext.data.items.topStart
 
 data class TextOptions(
     override var radius: Dp = 0.dp,
@@ -156,6 +161,7 @@ fun TextOptions.toTextFieldOptions() = TextFieldOptions(
     underlineThickness,
     underlineColor,
     isUnderlineColorClear,
+    dynamicHeight = false,
     defaultText = "",
     defaultTextColor = Black,
     isDefaultTextColorClear = false,

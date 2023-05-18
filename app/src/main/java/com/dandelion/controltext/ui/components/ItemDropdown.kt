@@ -29,9 +29,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.dandelion.controltext.data.Item
-import com.dandelion.controltext.data.fonts
-import com.dandelion.controltext.data.steagalFontRegular
+import com.dandelion.controltext.data.items.Item
+import com.dandelion.controltext.data.items.fonts
+import com.dandelion.controltext.data.items.steagalFontRegular
 
 @Composable
 fun <T> ItemDropdown(

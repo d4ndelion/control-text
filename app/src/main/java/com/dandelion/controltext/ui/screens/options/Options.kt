@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.sp
 import com.dandelion.controltext.data.CommonOptions
 import com.dandelion.controltext.data.TextFieldOptions
 import com.dandelion.controltext.data.TextOptions
-import com.dandelion.controltext.data.alignments
+import com.dandelion.controltext.data.items.alignments
 import com.dandelion.controltext.data.cachedFields
-import com.dandelion.controltext.data.fonts
-import com.dandelion.controltext.data.keyboardTypes
-import com.dandelion.controltext.data.textAlignments
+import com.dandelion.controltext.data.items.fonts
+import com.dandelion.controltext.data.items.keyboardTypes
+import com.dandelion.controltext.data.items.textAlignments
 import com.dandelion.controltext.data.toTextFieldOptions
 import com.dandelion.controltext.data.toTextOptions
 import com.dandelion.controltext.setScreen
@@ -88,7 +88,7 @@ fun OptionsScreenContent(fieldCount: Int) {
             )
             keyboardController.clearFocus()
             coroutineScope.launch {
-                scrollState.scrollTo(0)
+                scrollState.animateScrollTo(0)
             }
             if (fieldIndex == fieldCount - 1) {
                 setScreen(Output)
