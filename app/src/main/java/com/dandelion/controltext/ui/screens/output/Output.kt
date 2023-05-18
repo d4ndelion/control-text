@@ -44,6 +44,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -123,10 +124,12 @@ fun OutputScreenContent() {
                     }
                 }
             }
-            Button(onClick = {
-                setScreen(Enter)
-            }) {
-                Text("Back")
+            Box(modifier = Modifier.fillMaxWidth().background(LightGray), contentAlignment = Alignment.Center) {
+                Button(onClick = {
+                    setScreen(Enter)
+                }) {
+                    Text("Back")
+                }
             }
         }
     }
