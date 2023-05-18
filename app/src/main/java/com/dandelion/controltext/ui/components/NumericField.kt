@@ -51,7 +51,7 @@ fun NumericField(label: String, initValue: Int, onValueChange: (Int) -> Unit) {
 @Composable
 fun FloatNumericField(label: String, initValue: Float, onValueChange: (Float) -> Unit) {
     var value by remember(key1 = onValueChange) {
-        mutableStateOf((initValue.toInt()).toString())
+        mutableStateOf(initValue.toString())
     }
 
     Row(

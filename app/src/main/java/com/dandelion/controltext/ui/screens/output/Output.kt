@@ -398,14 +398,14 @@ fun ResultTextField(
                     textAlign = textAlignment.item,
                     fontFamily = font.item
                 ),
-                visualTransformation = if (secureTextEntry) PasswordVisualTransformation() else VisualTransformation.None,
+                visualTransformation = if (secureTextEntry) PasswordVisualTransformation('*') else VisualTransformation.None,
                 maxLines = if (lineCount == 0) MAX_VALUE else lineCount,
                 decorationBox = { innerTextField ->
                     TextFieldDefaults.TextFieldDecorationBox(
                         value = fieldValue.text,
                         innerTextField = innerTextField,
                         singleLine = false,
-                        visualTransformation = if (secureTextEntry) PasswordVisualTransformation() else VisualTransformation.None,
+                        visualTransformation = if (secureTextEntry) PasswordVisualTransformation('*') else VisualTransformation.None,
                         interactionSource = MutableInteractionSource(),
                         placeholder = {
                             Text(
