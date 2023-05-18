@@ -44,6 +44,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -78,12 +79,12 @@ fun OutputScreenContent() {
             .fillMaxSize()
             .background(Blue)
     ) {
-        Column(Modifier.background(Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.background(White), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .background(Color.White)
+                    .background(White)
             ) {
                 val requesters = cachedFields.map {
                     when (it) {
@@ -209,26 +210,35 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                 .first()
                         val textBounds = layoutResult.getBoundingBoxes(annotation.start, annotation.end)
                         onDraw = {
-                            val paddingLeft = paddingLeft?.toPx() ?: paddingTop.toPx()
-                            val paddingRight = paddingRight?.toPx() ?: paddingTop.toPx()
-                            val paddingBottom = paddingBottom?.toPx() ?: paddingTop.toPx()
+                            var paddingLeft = paddingLeft?.toPx() ?: 0f
+                            val paddingRight = paddingRight?.toPx() ?: 0f
+                            val paddingBottom = paddingBottom?.toPx() ?: 0f
+                            if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                                paddingLeft = paddingTop.toPx()
+                            }
+                            val maxRightBound = layoutResult.size.width
                             for (bound in textBounds) {
-                                val leftX = bound.bottomLeft.x
-                                val leftY = bound.bottomLeft.y
-                                val rightX = bound.bottomRight.x
-                                val rightY = bound.bottomRight.y
-                                drawLine(
-                                    color = if (isLinkColorClear) Transparent else linkUnderlineColor,
-                                    strokeWidth = linkUnderlineThickness.toPx(),
-                                    start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
-                                    end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
-                                )
+                                if (bound.right <= maxRightBound) {
+                                    val leftX = bound.bottomLeft.x
+                                    val leftY = bound.bottomLeft.y
+                                    val rightX = bound.bottomRight.x
+                                    val rightY = bound.bottomRight.y
+                                    drawLine(
+                                        color = if (isUnderlineColorClear) Transparent else linkUnderlineColor,
+                                        strokeWidth = linkUnderlineThickness.toPx(),
+                                        start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
+                                        end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
+                                    )
+                                }
                             }
                         }
                         onDrawTextUnderline = {
-                            val paddingLeft = paddingLeft?.toPx() ?: paddingTop.toPx()
-                            val paddingRight = paddingRight?.toPx() ?: paddingTop.toPx()
-                            val paddingBottom = paddingBottom?.toPx() ?: paddingTop.toPx()
+                            var paddingLeft = paddingLeft?.toPx() ?: 0f
+                            val paddingRight = paddingRight?.toPx() ?: 0f
+                            val paddingBottom = paddingBottom?.toPx() ?: 0f
+                            if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                                paddingLeft = paddingTop.toPx()
+                            }
                             val beforeLink = layoutResult.getBoundingBoxes(0, annotation.start)
                             val afterLink = layoutResult.getBoundingBoxes(annotation.end, fieldValue.text.length)
                             onDrawTextUnderline = {
@@ -244,7 +254,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                             leftX + paddingLeft,
                                             leftY + paddingTop.toPx()
                                         ),
-                                        end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
+                                        end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
                                     )
                                 }
                                 for (bound in afterLink) {
@@ -259,7 +269,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                             leftX + paddingLeft,
                                             leftY + paddingTop.toPx()
                                         ),
-                                        end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
+                                        end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
                                     )
                                 }
                             }
@@ -267,9 +277,12 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                     } else {
                         val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
                         onDrawTextUnderline = {
-                            val paddingLeft = paddingLeft?.toPx() ?: paddingTop.toPx()
-                            val paddingRight = paddingRight?.toPx() ?: paddingTop.toPx()
-                            val paddingBottom = paddingBottom?.toPx() ?: paddingTop.toPx()
+                            var paddingLeft = paddingLeft?.toPx() ?: 0f
+                            val paddingRight = paddingRight?.toPx() ?: 0f
+                            val paddingBottom = paddingBottom?.toPx() ?: 0f
+                            if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                                paddingLeft = paddingTop.toPx()
+                            }
                             val maxRightBound = layoutResult.size.width
                             for (bound in textBounds) {
                                 if (bound.right <= maxRightBound) {
@@ -280,11 +293,8 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                                     drawLine(
                                         color = if (isUnderlineColorClear) Transparent else underlineColor,
                                         strokeWidth = underlineThickness.toPx(),
-                                        start = bound.bottomLeft.copy(
-                                            leftX + paddingLeft,
-                                            leftY + paddingTop.toPx()
-                                        ),
-                                        end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
+                                        start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
+                                        end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
                                     )
                                 }
                             }
@@ -418,9 +428,12 @@ fun ResultTextField(
                 onTextLayout = { layoutResult ->
                     val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
                     onDrawTextUnderline = {
-                        val paddingLeft = paddingLeft?.toPx() ?: paddingTop.toPx()
-                        val paddingRight = paddingRight?.toPx() ?: paddingTop.toPx()
-                        val paddingBottom = paddingBottom?.toPx() ?: paddingTop.toPx()
+                        var paddingLeft = paddingLeft?.toPx() ?: 0f
+                        val paddingRight = paddingRight?.toPx() ?: 0f
+                        val paddingBottom = paddingBottom?.toPx() ?: 0f
+                        if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                            paddingLeft = paddingTop.toPx()
+                        }
                         val maxRightBound = layoutResult.size.width
                         isEndOfLine = layoutResult.hasVisualOverflow
                         for (bound in textBounds) {
@@ -433,7 +446,7 @@ fun ResultTextField(
                                     color = if (isUnderlineColorClear) Transparent else underlineColor,
                                     strokeWidth = underlineThickness.toPx(),
                                     start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
-                                    end = bound.bottomRight.copy(rightX + paddingRight, rightY + paddingBottom)
+                                    end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
                                 )
                             }
                         }
@@ -476,5 +489,19 @@ fun ResultTextField(
 @Preview
 @Composable
 private fun OutputScreenContent_Preview() {
-    OutputScreenContent()
+    val options by remember { mutableStateOf(TextFieldOptions(
+        width = 100.dp,
+        underlineColor = Color(0, 255, 0),
+        underlineThickness = 2.dp,
+        paddingTop = 20.dp,
+        paddingBottom = 10.dp,
+        paddingLeft = 30.dp
+    )) }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(White)
+    ) {
+        ResultTextField(options = options, focusRequester = FocusRequester(), nextFocusRequester = FocusRequester())
+    }
 }
