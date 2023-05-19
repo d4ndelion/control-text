@@ -60,6 +60,7 @@ import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dandelion.controltext.data.TextFieldOptions
 import com.dandelion.controltext.data.TextOptions
 import com.dandelion.controltext.data.cachedFields
@@ -210,7 +211,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                 style = TextStyle.Default.copy(
                     fontSize = fontSize,
                     color = if (isTextColorClear) Transparent else textColor,
-                    lineHeight = lineSpacing,
+                    lineHeight = (fontSize.value + lineSpacing.value).sp,
                     textAlign = textAlignment.item,
                     fontFamily = font.item
                 ),
@@ -412,7 +413,7 @@ fun ResultTextField(
                 textStyle = TextStyle.Default.copy(
                     fontSize = fontSize,
                     color = if (isTextColorClear) Transparent else textColor,
-                    lineHeight = lineSpacing,
+                    lineHeight = (fontSize.value + lineSpacing.value).sp,
                     textAlign = textAlignment.item,
                     fontFamily = font.item
                 ),

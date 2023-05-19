@@ -49,7 +49,7 @@ data class TextFieldOptions(
     override var fontSize: TextUnit = 10.sp,
     override var textColor: Color = Black,
     override var isTextColorClear: Boolean = false,
-    override var lineSpacing: TextUnit = TextUnit.Unspecified,
+    override var lineSpacing: TextUnit = 0.sp,
     override var lineCount: Int = 0,
     override var isScrollable: Boolean = true,
     override var textAlignment: Item<TextAlign> = left,
