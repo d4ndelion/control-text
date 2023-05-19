@@ -179,5 +179,5 @@ fun TextFieldOptions.toTextOptions() = TextOptions(
     linkFontSize = 10.sp,
     linkUnderlineColor = Blue,
     isLinkUnderlineColorClear = false,
-    linkUnderlineThickness = 0.dp
+    linkUnderlineThickness = 1.dp
 )
