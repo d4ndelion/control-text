@@ -111,7 +111,8 @@ fun OutputScreenContent() {
                     when (cachedFields[num]) {
                         is TextOptions -> ResultText(
                             modifier = alignmentModifier,
-                            options = cachedFields[num] as TextOptions
+                            options = cachedFields[num] as TextOptions,
+                            focusRequester = requesters[num].second
                         )
 
                         is TextFieldOptions -> ResultTextField(
@@ -141,7 +142,7 @@ fun OutputScreenContent() {
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
+fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequester: FocusRequester? = null) {
     val fieldValue by remember {
         mutableStateOf(buildAnnotatedString {
             with(options) {
@@ -205,6 +206,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier) {
                 .clip(RoundedCornerShape(radius))
                 .background(if (isBackgroundClear) Transparent else borderColor)
                 .padding(borderWidth)
+                .focusRequester(focusRequester ?: FocusRequester())
         ) {
             BasicText(
                 text = fieldValue,
@@ -407,7 +409,7 @@ fun ResultTextField(
                     } else {
                         if (nextFocusRequester == null) {
                             focusManager.moveFocus(Next)
-                        }
+                        } else nextFocusRequester.requestFocus()
                     }
                 },
                 textStyle = TextStyle.Default.copy(
