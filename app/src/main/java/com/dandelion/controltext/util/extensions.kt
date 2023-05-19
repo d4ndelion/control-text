@@ -14,6 +14,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.ResolvedTextDirection.Ltr
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import java.lang.Float.MIN_NORMAL
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -26,26 +27,31 @@ fun Modifier.shadow(
     width: Dp? = null,
     height: Dp? = null
 ) = drawBehind {
+    val shadowRadius = if (radius == 0.dp) MIN_NORMAL else radius.toPx()
     val shadowX = ((size.width - (width?.toPx() ?: size.width)) / 2) + offsetX.toPx()
     val shadowY = ((size.height - (height?.toPx() ?: size.height)) / 2) + offsetY.toPx()
+    val shadowColor = color.copy(opacity).toArgb()
     val rect = Rect(
         Offset(shadowX, shadowY),
         Size(width?.toPx() ?: size.width, height?.toPx() ?: size.height)
     )
+    val paint = Paint().apply {
+        this.color = Color(shadowColor)
+    }
     val frameworkPaint = Paint().asFrameworkPaint().apply {
         this.color = Color.Transparent.toArgb()
-        this.setShadowLayer(radius.toPx(), 0f, 0f, color.copy(opacity).toArgb())
+        this.setShadowLayer(shadowRadius, 0f, 0f, shadowColor)
     }
     drawIntoCanvas {
-        it.drawRoundRect(
-            rect.left,
-            rect.top,
-            rect.right,
-            rect.bottom,
-            0f,
-            0f,
-            frameworkPaint.toComposePaint()
-        )
+            it.drawRoundRect(
+                rect.left,
+                rect.top,
+                rect.right,
+                rect.bottom,
+                0f,
+                0f,
+                if (radius == 0.dp) paint else frameworkPaint.toComposePaint()
+            )
     }
 }
 

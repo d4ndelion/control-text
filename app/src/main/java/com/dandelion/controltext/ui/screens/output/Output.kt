@@ -517,6 +517,10 @@ private fun OutputScreenContent_Preview() {
                 lineCount = 1,
                 isShadowColorClear = false,
                 shadowColor = Color(0, 255, 0),
+                shadowOffsetY = 20.dp,
+                shadowOffsetX = 20.dp,
+                shadowOpacity = 1f,
+                shadowRadius = 0.dp
             )
         )
     }
