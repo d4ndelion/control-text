@@ -226,10 +226,9 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                                 .first()
                         val textBounds = layoutResult.getBoundingBoxes(annotation.start, annotation.end)
                         onDraw = {
+                            val isPaddingsNull = paddingLeft == null && paddingRight == null && paddingBottom == null
                             var paddingLeft = paddingLeft?.toPx() ?: 0f
-                            val paddingRight = paddingRight?.toPx() ?: 0f
-                            val paddingBottom = paddingBottom?.toPx() ?: 0f
-                            if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                            if (isPaddingsNull) {
                                 paddingLeft = paddingTop.toPx()
                             }
                             val maxRightBound = layoutResult.size.width
@@ -240,7 +239,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                                     val rightX = bound.bottomRight.x
                                     val rightY = bound.bottomRight.y
                                     drawLine(
-                                        color = if (isUnderlineColorClear || linkUnderlineThickness == 0.dp) Transparent else linkUnderlineColor,
+                                        color = if (isLinkUnderlineColorClear || linkUnderlineThickness == 0.dp) Transparent else linkUnderlineColor,
                                         strokeWidth = linkUnderlineThickness.toPx(),
                                         start = bound.bottomLeft.copy(leftX + paddingLeft, leftY + paddingTop.toPx()),
                                         end = bound.bottomRight.copy(rightX + paddingLeft, rightY + paddingTop.toPx())
@@ -249,10 +248,9 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                             }
                         }
                         onDrawTextUnderline = {
+                            val isPaddingsNull = paddingLeft == null && paddingRight == null && paddingBottom == null
                             var paddingLeft = paddingLeft?.toPx() ?: 0f
-                            val paddingRight = paddingRight?.toPx() ?: 0f
-                            val paddingBottom = paddingBottom?.toPx() ?: 0f
-                            if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                            if (isPaddingsNull) {
                                 paddingLeft = paddingTop.toPx()
                             }
                             val beforeLink = layoutResult.getBoundingBoxes(0, annotation.start)
@@ -451,10 +449,9 @@ fun ResultTextField(
                 onTextLayout = { layoutResult ->
                     val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
                     onDrawTextUnderline = {
+                        val isPaddingsNull = paddingLeft == null && paddingRight == null && paddingBottom == null
                         var paddingLeft = paddingLeft?.toPx() ?: 0f
-                        val paddingRight = paddingRight?.toPx() ?: 0f
-                        val paddingBottom = paddingBottom?.toPx() ?: 0f
-                        if (paddingLeft + paddingRight + paddingBottom == 0f) {
+                        if (isPaddingsNull) {
                             paddingLeft = paddingTop.toPx()
                         }
                         val maxRightBound = layoutResult.size.width
