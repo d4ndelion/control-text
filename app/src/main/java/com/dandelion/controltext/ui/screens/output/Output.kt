@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -36,7 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.focus.FocusDirection.Companion.Next
+import androidx.compose.ui.focus.FocusDirection.Companion.Down
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
@@ -52,6 +54,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction.Companion.Done
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -76,10 +79,16 @@ private const val ANNOTATION_IGNORE = "ignored"
 
 @Composable
 fun OutputScreenContent() {
+
+    val focusManager = LocalFocusManager.current
+
     Column(
         Modifier
             .fillMaxSize()
             .background(Blue)
+            .clickable(interactionSource = MutableInteractionSource(), indication = null) {
+                focusManager.clearFocus()
+            }
     ) {
         Column(Modifier.background(White), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
@@ -91,14 +100,14 @@ fun OutputScreenContent() {
                 val requesters = cachedFields.map {
                     when (it) {
                         is TextFieldOptions -> Pair(it.identifier, FocusRequester())
-                        else -> Pair("", FocusRequester())
+                        else -> Pair("", null)
                     }
                 }
                 val nextRequesters = cachedFields.map { requester ->
                     when (requester) {
                         is TextFieldOptions -> Pair(
                             requesters.find { requester.identifier == it.first },
-                            requesters.find { requester.nextResponder == it.first }
+                            requesters.find { requester.nextResponder == it.first && requester.nextResponder.isNotEmpty() }
                         )
 
                         else -> Pair(Pair("", FocusRequester()), Pair("", FocusRequester()))
@@ -340,7 +349,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                             PaddingValues(paddingTop)
                         } else PaddingValues(
                             paddingLeft ?: 0.dp, paddingTop, paddingRight ?: 0.dp, paddingBottom ?: 0.dp
-                        ),
+                        )
                     )
             )
         }
@@ -403,10 +412,12 @@ fun ResultTextField(
                     if (it.text.length <= maxCharacters || maxCharacters == 0 && !isEndOfLine) {
                         Thread.sleep(executionDelay.times(1000).toLong())
                         fieldValue = it
-                        Log.d("ResultScreen input", it.text)
                     } else {
+                        Log.d("ResultScreen input", it.text)
                         if (nextFocusRequester == null) {
-                            focusManager.moveFocus(Next)
+                            if (!focusManager.moveFocus(Down)) {
+                                focusManager.clearFocus()
+                            }
                         } else nextFocusRequester.requestFocus()
                     }
                 },
@@ -444,8 +455,17 @@ fun ResultTextField(
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = keyboardType.item,
-                    autoCorrect = false
+                    autoCorrect = false,
+                    imeAction = Done
                 ),
+                keyboardActions = KeyboardActions(onDone = {
+                    Log.d("ResultScreen input", fieldValue.text)
+                    if (nextFocusRequester == null) {
+                        if (!focusManager.moveFocus(Down)) {
+                            focusManager.clearFocus()
+                        }
+                    } else nextFocusRequester.requestFocus()
+                }),
                 onTextLayout = { layoutResult ->
                     val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
                     onDrawTextUnderline = {
@@ -501,7 +521,8 @@ fun ResultTextField(
                     }
                     .onFocusChanged {
                         isFocused = it.isFocused
-                    })
+                    }
+            )
         }
     }
 }
