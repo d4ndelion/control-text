@@ -181,6 +181,7 @@ fun TextFeatures(currentField: TextOptions) {
     with(currentField) {
         TextOptionField("Content", content) { content = it }
         TextOptionField("Link", link) { link = it }
+        TextOptionField("Link content URL", urlLinkContent) { urlLinkContent = it }
         ColorInput("Link color", linkColor, isLinkColorClear, { isLinkColorClear = it }) { linkColor = it }
         ItemDropdown(
             label = "Link font",

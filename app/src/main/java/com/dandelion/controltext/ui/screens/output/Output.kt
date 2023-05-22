@@ -1,5 +1,6 @@
 package com.dandelion.controltext.ui.screens.output
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -18,8 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -48,6 +49,7 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -191,6 +193,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
 
     var onDraw: DrawScope.() -> Unit by remember { mutableStateOf({}) }
     var onDrawTextUnderline: DrawScope.() -> Unit by remember { mutableStateOf({}) }
+    val uriHandler = LocalUriHandler.current
 
     with(options) {
         Box(
@@ -221,7 +224,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                 .padding(borderWidth)
                 .focusRequester(focusRequester ?: FocusRequester())
         ) {
-            BasicText(
+            ClickableText(
                 text = fieldValue,
                 style = TextStyle.Default.copy(
                     fontSize = fontSize,
@@ -230,6 +233,17 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                     textAlign = textAlignment.item,
                     fontFamily = font.item
                 ),
+                onClick = {
+                    if (content.indexOf(link) != -1) {
+                        fieldValue.getStringAnnotations(ANNOTATION_TAG_LINK_UNDERLINE, it, it).firstOrNull()?.let {
+                            var url = Uri.parse(urlLinkContent)
+                            if (!urlLinkContent.startsWith("http://") && !urlLinkContent.startsWith("https://")) {
+                                url = Uri.parse("https://$url")
+                            }
+                            uriHandler.openUri(url.toString())
+                        }
+                    }
+                },
                 maxLines = if (lineCount == 0) MAX_VALUE else lineCount,
                 overflow = Ellipsis,
                 onTextLayout = { layoutResult ->

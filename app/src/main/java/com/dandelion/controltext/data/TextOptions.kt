@@ -57,6 +57,7 @@ data class TextOptions(
     override var isUnderlineColorClear: Boolean = false,
     var content: String = "",
     var link: String = "",
+    var urlLinkContent: String = "",
     var linkColor: Color = Blue,
     var isLinkColorClear: Boolean = false,
     var linkFont: Item<FontFamily> = steagalFontRegular,
