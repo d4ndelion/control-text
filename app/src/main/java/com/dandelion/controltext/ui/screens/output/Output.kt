@@ -159,12 +159,12 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
     val fieldValue by remember {
         mutableStateOf(buildAnnotatedString {
             with(options) {
-                if (link.isEmpty()) {
+                val index = content.indexOf(link)
+                if (index == -1) {
                     withAnnotation(ANNOTATION_TAG_UNDERLINE, annotation = ANNOTATION_IGNORE) {
                         append(content)
                     }
                 } else {
-                    val index = content.indexOf(link)
                     val beforeLink = content.substring(0 until index)
                     val afterLink = content.substring(index + link.length until content.length)
                     withAnnotation(ANNOTATION_TAG_UNDERLINE, annotation = ANNOTATION_IGNORE) {
@@ -233,7 +233,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                 maxLines = if (lineCount == 0) MAX_VALUE else lineCount,
                 overflow = Ellipsis,
                 onTextLayout = { layoutResult ->
-                    if (link.isNotEmpty()) {
+                    if (content.indexOf(link) != -1) {
                         val annotation =
                             fieldValue.getStringAnnotations(ANNOTATION_TAG_LINK_UNDERLINE, 0, MAX_VALUE)
                                 .first()
