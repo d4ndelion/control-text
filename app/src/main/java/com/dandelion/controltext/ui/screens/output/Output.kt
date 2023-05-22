@@ -415,9 +415,7 @@ fun ResultTextField(
                     } else {
                         Log.d("ResultScreen input", it.text)
                         if (nextFocusRequester == null) {
-                            if (!focusManager.moveFocus(Down)) {
-                                focusManager.clearFocus()
-                            }
+                            focusManager.moveFocus(Down)
                         } else nextFocusRequester.requestFocus()
                     }
                 },
