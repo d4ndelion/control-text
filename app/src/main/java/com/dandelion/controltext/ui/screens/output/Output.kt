@@ -38,9 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.focus.FocusDirection.Companion.Down
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -103,11 +101,17 @@ fun OutputScreenContent() {
                         else -> Pair("", null)
                     }
                 }
-                val nextRequesters = cachedFields.map { requester ->
+                val nextRequesters = cachedFields.mapIndexed { index, requester ->
                     when (requester) {
                         is TextFieldOptions -> Pair(
-                            requesters.find { requester.identifier == it.first },
-                            requesters.find { requester.nextResponder == it.first && requester.nextResponder.isNotEmpty() }
+                            requesters.find { requester.identifier == it.first && requester.identifier.isNotEmpty() }
+                                ?: requesters[index],
+                            requesters.find { requester.nextResponder == it.first && requester.identifier.isNotEmpty() }
+                                ?: try {
+                                    requesters[index + 1]
+                                } catch (exception: IndexOutOfBoundsException) {
+                                    null
+                                }
                         )
 
                         else -> Pair(Pair("", FocusRequester()), Pair("", FocusRequester()))
@@ -127,7 +131,7 @@ fun OutputScreenContent() {
                         is TextFieldOptions -> ResultTextField(
                             modifier = alignmentModifier,
                             options = cachedFields[num] as TextFieldOptions,
-                            focusRequester = requesters[num].second,
+                            focusRequester = nextRequesters[num].first.second,
                             nextFocusRequester = nextRequesters[num].second?.second,
                             isFirstResponder = (cachedFields[num] as TextFieldOptions).firstResponder
                         )
@@ -409,14 +413,18 @@ fun ResultTextField(
         ) {
             BasicTextField(value = fieldValue,
                 onValueChange = {
-                    if (it.text.length <= maxCharacters || maxCharacters == 0 && !isEndOfLine) {
-                        Thread.sleep(executionDelay.times(1000).toLong())
-                        fieldValue = it
+                    if (maxCharacters == 0) {
+                        fieldValue = it.copy(it.text.take(MAX_VALUE))
                     } else {
-                        Log.d("ResultScreen input", it.text)
-                        if (nextFocusRequester == null) {
-                            focusManager.moveFocus(Down)
-                        } else nextFocusRequester.requestFocus()
+                        if (it.text.length < maxCharacters) {
+                            fieldValue = it.copy(it.text.take(maxCharacters))
+                        }
+                        if (it.text.length >= maxCharacters) {
+                            fieldValue = it.copy(it.text.take(maxCharacters))
+                            if (nextFocusRequester == null) {
+                                focusManager.clearFocus()
+                            } else nextFocusRequester.requestFocus()
+                        }
                     }
                 },
                 textStyle = TextStyle.Default.copy(
@@ -459,9 +467,7 @@ fun ResultTextField(
                 keyboardActions = KeyboardActions(onDone = {
                     Log.d("ResultScreen input", fieldValue.text)
                     if (nextFocusRequester == null) {
-                        if (!focusManager.moveFocus(Down)) {
-                            focusManager.clearFocus()
-                        }
+                        focusManager.clearFocus()
                     } else nextFocusRequester.requestFocus()
                 }),
                 onTextLayout = { layoutResult ->
@@ -495,9 +501,6 @@ fun ResultTextField(
                     .clip(RoundedCornerShape(radius))
                     .background(if (isBackgroundClear) Transparent else background)
                     .focusRequester(focusRequester ?: FocusRequester())
-                    .focusProperties {
-                        next = nextFocusRequester ?: FocusRequester()
-                    }
                     .defaultMinSize(minHeight = minHeight, minWidth = minWidth)
                     .then(
                         if (height == 0.dp || (isFocused && dynamicHeight)) Modifier.defaultMinSize(minHeight = height)
