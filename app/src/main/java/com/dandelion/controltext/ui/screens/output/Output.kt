@@ -108,7 +108,10 @@ fun OutputScreenContent() {
                         is TextFieldOptions -> Pair(
                             requesters.find { requester.identifier == it.first && requester.identifier.isNotEmpty() }
                                 ?: requesters[index],
-                            requesters.find { requester.nextResponder == it.first && requester.identifier.isNotEmpty() }
+                            requesters.find {
+                                requester.nextResponder == it.first && requester.identifier.isNotEmpty() && requesters.map { req -> req.first }
+                                    .contains(requester.identifier)
+                            }
                                 ?: try {
                                     requesters[index + 1]
                                 } catch (exception: IndexOutOfBoundsException) {
@@ -432,13 +435,16 @@ fun ResultTextField(
                     } else {
                         if (it.text.length < maxCharacters) {
                             fieldValue = it.copy(it.text.take(maxCharacters))
+                            return@BasicTextField
                         }
-                        if (it.text.length >= maxCharacters) {
+                        if (it.text != fieldValue.text) {
                             fieldValue = it.copy(it.text.take(maxCharacters))
                             if (nextFocusRequester == null) {
                                 focusManager.clearFocus()
                             } else nextFocusRequester.requestFocus()
+                            return@BasicTextField
                         }
+                        fieldValue = it.copy(it.text.take(maxCharacters))
                     }
                 },
                 textStyle = TextStyle.Default.copy(
