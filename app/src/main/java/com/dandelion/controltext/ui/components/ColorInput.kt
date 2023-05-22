@@ -67,6 +67,9 @@ fun ColorInput(
             if (clear) {
                 onColorChange(Transparent)
                 r = "0"; g = "0"; b = "0"
+            } else {
+                onColorChange(Black)
+                r = "0"; g = "0"; b = "0"
             }
         }, labelSize = 14.sp)
         Spacer(Modifier.height(6.dp))
