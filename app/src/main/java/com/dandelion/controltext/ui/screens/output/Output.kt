@@ -431,10 +431,8 @@ fun ResultTextField(
             BasicTextField(value = fieldValue,
                 onValueChange = {
                     if (maxCharacters == 0) {
-                        Thread.sleep((executionDelay * 1000).toLong())
                         fieldValue = it.copy(it.text.take(MAX_VALUE))
                     } else {
-                        Thread.sleep((executionDelay * 1000).toLong())
                         if (it.text.length < maxCharacters) {
                             fieldValue = it.copy(it.text.take(maxCharacters))
                             return@BasicTextField
@@ -443,7 +441,10 @@ fun ResultTextField(
                             fieldValue = it.copy(it.text.take(maxCharacters))
                             if (nextFocusRequester == null) {
                                 focusManager.clearFocus()
-                            } else nextFocusRequester.requestFocus()
+                            } else {
+                                Thread.sleep((executionDelay * 1000).toLong())
+                                nextFocusRequester.requestFocus()
+                            }
                             return@BasicTextField
                         }
                         fieldValue = it.copy(it.text.take(maxCharacters))
@@ -490,7 +491,10 @@ fun ResultTextField(
                     Log.d("ResultScreen input", fieldValue.text)
                     if (nextFocusRequester == null) {
                         focusManager.clearFocus()
-                    } else nextFocusRequester.requestFocus()
+                    } else {
+                        Thread.sleep((executionDelay * 1000).toLong())
+                        nextFocusRequester.requestFocus()
+                    }
                 }),
                 onTextLayout = { layoutResult ->
                     val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
