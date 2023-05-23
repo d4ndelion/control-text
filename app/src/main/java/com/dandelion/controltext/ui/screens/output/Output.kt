@@ -431,8 +431,10 @@ fun ResultTextField(
             BasicTextField(value = fieldValue,
                 onValueChange = {
                     if (maxCharacters == 0) {
+                        Thread.sleep((executionDelay * 1000).toLong())
                         fieldValue = it.copy(it.text.take(MAX_VALUE))
                     } else {
+                        Thread.sleep((executionDelay * 1000).toLong())
                         if (it.text.length < maxCharacters) {
                             fieldValue = it.copy(it.text.take(maxCharacters))
                             return@BasicTextField
