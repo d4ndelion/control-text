@@ -42,7 +42,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
@@ -62,6 +61,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp.Companion.Unspecified
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dandelion.controltext.data.TextFieldOptions
@@ -237,7 +237,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                     fontFamily = font.item
                 ),
                 onClick = { charOffset ->
-                    if (content.indexOf(link) != -1) {
+                    if (content.indexOf(link) != -1 || link.isNotBlank() || urlLinkContent.isNotBlank()) {
                         fieldValue.getStringAnnotations(ANNOTATION_TAG_LINK_UNDERLINE, charOffset, charOffset)
                             .firstOrNull()
                             ?.let { span ->
@@ -351,7 +351,10 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                     .background(if (isBackgroundClear) Transparent else borderColor)
                     .clip(RoundedCornerShape(radius))
                     .background(if (isBackgroundClear) Transparent else background)
-                    .defaultMinSize(minHeight = minHeight, minWidth = minWidth)
+                    .defaultMinSize(
+                        minHeight = if (height == 0.dp) minHeight else Unspecified,
+                        minWidth = if (width == 0.dp) minWidth else Unspecified
+                    )
                     .then(if (height == 0.dp) Modifier else Modifier.height(height))
                     .then(if (width == 0.dp) Modifier else Modifier.width(width))
                     .verticalScroll(rememberScrollState(), isScrollable)
@@ -427,7 +430,12 @@ fun ResultTextField(
                 )
                 .clip(RoundedCornerShape(radius))
                 .background(if (isBackgroundClear) Transparent else borderColor)
-                .padding(borderWidth)
+                .padding(
+                    borderWidth,
+                    borderWidth,
+                    borderWidth,
+                    borderWidth + (paddingBottom ?: if (paddingLeft == null) paddingTop else 0.dp)
+                )
 
         ) {
             BasicTextField(value = fieldValue,
@@ -531,7 +539,10 @@ fun ResultTextField(
                     .clip(RoundedCornerShape(radius))
                     .background(if (isBackgroundClear) Transparent else background)
                     .focusRequester(focusRequester ?: FocusRequester())
-                    .defaultMinSize(minHeight = minHeight, minWidth = minWidth)
+                    .defaultMinSize(
+                        minHeight = if (height == 0.dp) minHeight else Unspecified,
+                        minWidth = if (width == 0.dp) minWidth else Unspecified
+                    )
                     .then(
                         if (height == 0.dp || (isFocused && dynamicHeight)) Modifier.defaultMinSize(minHeight = height)
                         else Modifier.height(height)
@@ -566,13 +577,9 @@ private fun OutputScreenContent_Preview() {
             TextFieldOptions(
                 width = 40.dp,
                 height = 60.dp,
-                lineCount = 1,
-                isShadowColorClear = false,
-                shadowColor = Color(0, 255, 0),
-                shadowOffsetY = 20.dp,
-                shadowOffsetX = 20.dp,
-                shadowOpacity = 1f,
-                shadowRadius = 0.dp
+                underlineThickness = 1.dp,
+                paddingTop = 10.dp,
+                lineCount = 2
             )
         )
     }
