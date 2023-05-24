@@ -236,15 +236,17 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                     textAlign = textAlignment.item,
                     fontFamily = font.item
                 ),
-                onClick = {
+                onClick = { charOffset ->
                     if (content.indexOf(link) != -1) {
-                        fieldValue.getStringAnnotations(ANNOTATION_TAG_LINK_UNDERLINE, it, it).firstOrNull()?.let {
-                            var url = Uri.parse(urlLinkContent)
-                            if (!urlLinkContent.startsWith("http://") && !urlLinkContent.startsWith("https://")) {
-                                url = Uri.parse("https://$url")
+                        fieldValue.getStringAnnotations(ANNOTATION_TAG_LINK_UNDERLINE, charOffset, charOffset)
+                            .firstOrNull()
+                            ?.let { span ->
+                                var url = Uri.parse(urlLinkContent)
+                                if (!urlLinkContent.startsWith("http://") && !urlLinkContent.startsWith("https://")) {
+                                    url = Uri.parse("https://$url")
+                                }
+                                uriHandler.openUri(url.toString())
                             }
-                            uriHandler.openUri(url.toString())
-                        }
                     }
                 },
                 maxLines = if (lineCount == 0) MAX_VALUE else lineCount,
