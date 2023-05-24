@@ -440,8 +440,10 @@ fun ResultTextField(
                         if (it.text != fieldValue.text) {
                             fieldValue = it.copy(it.text.take(maxCharacters))
                             if (nextFocusRequester == null) {
+                                Log.d("ResultScreen input", fieldValue.text)
                                 focusManager.clearFocus()
                             } else {
+                                Log.d("ResultScreen input", fieldValue.text)
                                 Thread.sleep((executionDelay * 1000).toLong())
                                 nextFocusRequester.requestFocus()
                             }
