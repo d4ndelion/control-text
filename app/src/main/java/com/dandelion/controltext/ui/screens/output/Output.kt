@@ -403,6 +403,7 @@ fun ResultTextField(
     var onDrawTextUnderline: DrawScope.() -> Unit by remember { mutableStateOf({}) }
     var fieldValue by remember { mutableStateOf(TextFieldValue("")) }
     var isFocused by remember { mutableStateOf(false) }
+    var isReachedMaxLines by remember { mutableStateOf(false) }
 
     with(options) {
         Box(
@@ -440,6 +441,10 @@ fun ResultTextField(
         ) {
             BasicTextField(value = fieldValue,
                 onValueChange = {
+                    if (fieldValue.text.contains(it.text)) {
+                        fieldValue = it.copy(it.text.take(if (maxCharacters == 0) MAX_VALUE else maxCharacters))
+                    }
+                    if (isReachedMaxLines) return@BasicTextField
                     if (maxCharacters == 0) {
                         fieldValue = it.copy(it.text.take(MAX_VALUE))
                     } else {
@@ -509,6 +514,17 @@ fun ResultTextField(
                     }
                 }),
                 onTextLayout = { layoutResult ->
+                    isReachedMaxLines = layoutResult.lineCount > lineCount && lineCount != 0
+                    if (isReachedMaxLines) {
+                        fieldValue = fieldValue.copy(fieldValue.text.dropLast(1))
+                        Log.d("ResultScreen input", fieldValue.text)
+                        if (nextFocusRequester == null) {
+                            focusManager.clearFocus()
+                        } else {
+                            Thread.sleep((executionDelay * 1000).toLong())
+                            nextFocusRequester.requestFocus()
+                        }
+                    }
                     val textBounds = layoutResult.getBoundingBoxes(0, fieldValue.text.length)
                     onDrawTextUnderline = {
                         val isPaddingsNull = paddingLeft == null && paddingRight == null && paddingBottom == null
