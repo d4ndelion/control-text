@@ -237,7 +237,7 @@ fun ResultText(options: TextOptions, modifier: Modifier = Modifier, focusRequest
                     fontFamily = font.item
                 ),
                 onClick = { charOffset ->
-                    if (content.indexOf(link) != -1 || link.isNotBlank() || urlLinkContent.isNotBlank()) {
+                    if (content.indexOf(link) != -1 && link.isNotBlank() && urlLinkContent.isNotBlank()) {
                         fieldValue.getStringAnnotations(ANNOTATION_TAG_LINK_UNDERLINE, charOffset, charOffset)
                             .firstOrNull()
                             ?.let { span ->
