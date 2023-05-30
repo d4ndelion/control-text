@@ -34,7 +34,7 @@ data class TextFieldOptions(
     override var paddingBottom: Dp? = null,
     override var borderWidth: Dp = 1.dp,
     override var borderColor: Color = Black,
-    override var isBorderColorClear: Boolean = false,
+    override var isBorderColorClear: Boolean = true,
     override var background: Color = White,
     override var isBackgroundClear: Boolean = true,
     override var shadowColor: Color = Black,

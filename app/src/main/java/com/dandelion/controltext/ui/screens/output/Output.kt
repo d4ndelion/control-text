@@ -563,7 +563,7 @@ fun ResultTextField(
                         if (height == 0.dp || (isFocused && dynamicHeight)) Modifier.defaultMinSize(minHeight = height)
                         else Modifier.height(height)
                     )
-                    .then(if (width == 0.dp) Modifier else Modifier.width(width))
+                    .then(if (width == 0.dp) Modifier.width((fieldValue.text.length * fontSize.value).dp) else Modifier.width(width))
                     .verticalScroll(rememberScrollState(), isScrollable)
                     .indicatorLine(
                         enabled = true, isError = false, colors = TextFieldDefaults.textFieldColors(
