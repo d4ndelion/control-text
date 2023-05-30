@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -563,7 +564,11 @@ fun ResultTextField(
                         if (height == 0.dp || (isFocused && dynamicHeight)) Modifier.defaultMinSize(minHeight = height)
                         else Modifier.height(height)
                     )
-                    .then(if (width == 0.dp) Modifier.width((fieldValue.text.length * fontSize.value).dp) else Modifier.width(width))
+                    .then(
+                        if (width == 0.dp)
+                            Modifier.width(IntrinsicSize.Min)
+                        else Modifier.width(width)
+                    )
                     .verticalScroll(rememberScrollState(), isScrollable)
                     .indicatorLine(
                         enabled = true, isError = false, colors = TextFieldDefaults.textFieldColors(
